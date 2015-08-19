@@ -16,8 +16,19 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ui.ace'
+    'ngAria',
+    'ui.ace',
+    'editor.drive',
+    'editor.login',
+    'ngMaterial'
   ])
+  .constant('apiKey', null)
+  .constant('clientId', '669299579698-6fvvrtmplsldbpkjv1grvl7ft7ukaam9.apps.googleusercontent.com')
+  .constant('applicationId', '669299579698')
+  .constant('scope', ['email', 'profile', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.install'])
+  .constant('loadApis', {
+    'drive' : 'v2'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
