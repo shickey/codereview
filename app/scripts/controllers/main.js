@@ -8,7 +8,7 @@
  * Controller of the codeReviewApp
  */
 angular.module('codeReviewApp')
-  .controller('MainCtrl', ['$scope', '$routeParams', '$q', '$mdToast', 'drive', 'login', function ($scope, $routeParams, $q, $mdToast, drive, login) {
+  .controller('MainCtrl', ['$scope', '$routeParams', '$q', 'drive', 'login', function ($scope, $routeParams, $q, drive, login) {
     
     var DEFAULT_FILE = {
       content: '',
@@ -31,7 +31,7 @@ angular.module('codeReviewApp')
     };
     
     var showMessage = function(message) {
-      $mdToast.show($mdToast.simple().content(message));
+      console.log(message);
     };
     
     var load = function(fileId) {

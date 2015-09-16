@@ -3,7 +3,9 @@
  * Service wrapper for gapi auth functions
  */
 
-angular.module('editor.login').service('login', ['$q', '$mdDialog', 'googleApi', 'clientId', 'scope', function ($q, $mdDialog, googleApi, clientId, scope) {
+var module = angular.module('editor.login', ['editor.gapi']);
+
+module.service('login', ['$q', 'googleApi', 'clientId', 'scope', function ($q, googleApi, clientId, scope) {
 
   /**
   * Check if the current token is valid (exists & not expired.)
@@ -81,24 +83,5 @@ angular.module('editor.login').service('login', ['$q', '$mdDialog', 'googleApi',
     var request = buildAuthRequest(true, user);
     return executeRequest(request);
   };
-
-  /**
-   * Displays a dialog with a login button.
-   *
-   * @param {Event} $event Optional click event for animations
-   * @param {String} user Optional user ID hint if a particular account is required
-   */
-  this.showLoginDialog = function($event, user) {
-    return $mdDialog.show({
-      targetEvent: $event,
-      templateUrl: "modules/login/login.html",
-      controller: 'LoginCtrl',
-      clickOutsideToClose: false,
-      escapeToClose: false,
-      controllerAs: 'ctrl',
-      locals: {
-        user: user
-      }
-    });
-  };
+  
 }]);

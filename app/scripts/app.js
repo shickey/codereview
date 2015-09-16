@@ -19,8 +19,7 @@ angular
     'ngAria',
     'ui.ace',
     'editor.drive',
-    'editor.login',
-    'ngMaterial'
+    'editor.login'
   ])
   .constant('apiKey', null)
   .constant('clientId', '669299579698-6fvvrtmplsldbpkjv1grvl7ft7ukaam9.apps.googleusercontent.com')
@@ -35,9 +34,9 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
+      .when('/:fileId', {
+        templateUrl: 'views/editor.html',
+        controller: 'EditorCtrl'
       })
       .otherwise({
         redirectTo: '/'
