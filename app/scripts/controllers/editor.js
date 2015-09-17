@@ -8,6 +8,6 @@
  * Controller of the codeReviewApp
  */
 angular.module('codeReviewApp')
-  .controller('EditorCtrl', function ($scope) {
+  .controller('EditorCtrl', function() {
     
   });

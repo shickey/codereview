@@ -3,7 +3,7 @@
  * Service wrapper for gapi auth functions
  */
 
-var module = angular.module('editor.login', ['editor.gapi']);
+var module = angular.module('login', ['gapi']);
 
 module.service('login', ['$q', 'googleApi', 'clientId', 'scope', function ($q, googleApi, clientId, scope) {
 

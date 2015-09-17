@@ -21,7 +21,6 @@ angular.module('codeReviewApp')
     };
 
     $scope.file = null;
-    $scope.loading = true;
     
     $scope.openFile = function() {
       console.log('hello world!');
@@ -48,11 +47,11 @@ angular.module('codeReviewApp')
     };
     
     // Authenticate & load doc
-    var loadFn = angular.bind($scope, load, $routeParams.fileId);
-    login.checkAuth($routeParams.user).then(loadFn, function() {
-      return login.showLoginDialog(null, $routeParams.user).then(loadFn);
-    }).finally(function() {
-      $scope.loading = false;
-    });
+    // var loadFn = angular.bind($scope, load, $routeParams.fileId);
+    // login.checkAuth($routeParams.user).then(loadFn, function() {
+    //   return login.showLoginDialog(null, $routeParams.user).then(loadFn);
+    // }).finally(function() {
+    //   $scope.loading = false;
+    // });
     
   }]);

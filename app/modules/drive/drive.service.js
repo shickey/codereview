@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-var module = angular.module('editor.drive', ['editor.gapi']);
+var module = angular.module('drive', ['gapi']);
 
 module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', function($q, $cacheFactory, googleApi, applicationId) {
 

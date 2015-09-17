@@ -29,7 +29,7 @@ function on_gapi_loaded() {
   }
 }
 
-var module = angular.module('editor.gapi', []);
+var module = angular.module('gapi', []);
 
 /**
  * Adapter for exposing gapi as an angular service. This registers a promise that will
