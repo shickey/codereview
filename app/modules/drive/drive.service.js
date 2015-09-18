@@ -116,13 +116,15 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   this.showPicker = function() {
     return googleApi.then(function(gapi) {
       var deferred = $q.defer();
-      var view = new google.picker.View(google.picker.ViewId.DOCS);
-      view.setMimeTypes('text/plain');
+      var view = new google.picker.DocsView;
+      view.setIncludeFolders(true);
+      view.setMimeTypes('text/x-python');
       var picker = new google.picker.PickerBuilder()
         .setAppId(applicationId)
         .setOAuthToken(gapi.auth.getToken().access_token)
         .addView(view)
         .setCallback(function(data) {
+          console.log(data);
           if (data.action == 'picked') {
             var id = data.docs[0].id;
             deferred.resolve(id);

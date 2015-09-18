@@ -10,18 +10,24 @@
 angular.module('codeReviewApp')
   .controller('EditorCtrl', ['$scope', '$routeParams', 'drive', function($scope, $routeParams, drive) {
     
+    $scope.editor = null;
     $scope.file = null;
+    
+    $scope.aceLoaded = function(editor) {
+      editor.setReadOnly(true);
+      $scope.editor = editor;
+      
+      loadFile();
+    };
     
     var loadFile = function() {
       var filePromise = drive.loadFile($routeParams.fileId);
       return filePromise.then(function(file) {
         $scope.file = file;
-        return $scope.file;
+        $scope.editor.setValue(file.content);
       }, function() {
         console.log('Unable to load file');
       });
     };
-    
-    loadFile();
     
   }]);
