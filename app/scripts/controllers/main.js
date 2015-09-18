@@ -8,50 +8,26 @@
  * Controller of the codeReviewApp
  */
 angular.module('codeReviewApp')
-  .controller('MainCtrl', ['$scope', '$routeParams', '$q', 'drive', 'login', function ($scope, $routeParams, $q, drive, login) {
+  .controller('MainCtrl', ['$scope', '$location', 'login', 'drive', function($scope, $location, login, drive) {
+    $scope.loading    = true;
+    $scope.isLoggedIn = false;
     
-    var DEFAULT_FILE = {
-      content: '',
-      metadata: {
-        id: null,
-        title: 'untitled.txt',
-        mimeType: 'text/plain',
-        editable: true
-      }
+    login.checkAuth().then(function() {
+      $scope.isLoggedIn = true;
+    }).finally(function() {
+      $scope.loading = false;
+    });
+    
+    $scope.login = function() {
+      login.login().then(function() {
+        $scope.isLoggedIn = true;
+      });
     };
-
-    $scope.file = null;
     
     $scope.openFile = function() {
-      console.log('hello world!');
-      drive.showPicker().then(function(id) {
-        console.log(id);
+      drive.showPicker().then(function(fileId) {
+        $location.path('/' + fileId);
       });
     };
-    
-    var showMessage = function(message) {
-      console.log(message);
-    };
-    
-    var load = function(fileId) {
-      var filePromise = fileId ? drive.loadFile(fileId) : $q.when(DEFAULT_FILE);
-      return filePromise.then(function(file) {
-        $scope.file = file;
-        return $scope.file;
-      }, function() {
-        if(fileId) {
-          showMessage('Unable to load file');
-        }
-        return load();
-      });
-    };
-    
-    // Authenticate & load doc
-    // var loadFn = angular.bind($scope, load, $routeParams.fileId);
-    // login.checkAuth($routeParams.user).then(loadFn, function() {
-    //   return login.showLoginDialog(null, $routeParams.user).then(loadFn);
-    // }).finally(function() {
-    //   $scope.loading = false;
-    // });
     
   }]);

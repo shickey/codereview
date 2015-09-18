@@ -53,7 +53,7 @@ module.service('login', ['$q', 'googleApi', 'clientId', 'scope', function ($q, g
           if (result && !result.error) {
             deferred.resolve(result);
           } else {
-            var error = result ? result.error : 'Unknown authentication error';
+            var error = 'AUTH_ERROR';
             deferred.reject(error);
           }
         });
@@ -68,7 +68,7 @@ module.service('login', ['$q', 'googleApi', 'clientId', 'scope', function ($q, g
    * @param {String} user Optional login hint indiciating which account should be authorized
    * @return {Promise} promise that resolves on completion of the login
    */
-  this.login = function (user) {
+  this.login = function(user) {
     var request = buildAuthRequest(false, user);
     return executeRequest(request);
   };
