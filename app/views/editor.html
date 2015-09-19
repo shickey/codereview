@@ -4,23 +4,22 @@
   </div>
   <div class="col-md-3">
   
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-repeat="comment in file.comments">
       <div class="panel-heading">
-        <h3 class="panel-title">Commenter Name</h3>
+        <h3 class="panel-title">{{comment.author.displayName}}</h3>
       </div>
       <div class="panel-body">
-        Comments about the code go here!
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Commenter Name</h3>
-      </div>
-      <div class="panel-body">
-        Another comment
-        <button class="btn btn-primary" ng-click="openFile()">Click me!</button>
+        {{comment.content}}
       </div>
     </div>
     
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5 col-md-offset-1">
+    <input type="text" ng-model="commentText" />
+  </div>
+  <div class="col-md-2">
+    <button class="btn btn-warning" ng-click="addNewComment()">Add comment</button>
   </div>
 </div>

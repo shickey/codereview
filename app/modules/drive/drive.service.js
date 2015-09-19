@@ -21,7 +21,9 @@ var module = angular.module('drive', ['gapi']);
 module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', function($q, $cacheFactory, googleApi, applicationId) {
 
   // Only fetch fields that we care about
-  var DEFAULT_FIELDS = 'id,title,mimeType,userPermission,editable,copyable,shared,fileSize';
+  var DEFAULT_FILE_FIELDS = 'id,title,mimeType,userPermission,editable,copyable,shared,fileSize,downloadUrl';
+  var DEFAULT_COMMENT_FIELDS = 'items(anchor,author,content)';
+  var DEFAULT_REVISION_FIELDS = 'fileSize,id';
 
   var cache = $cacheFactory('files');
 
@@ -32,10 +34,12 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
    * @param {String} content File content
    * @return {Object} combined object
    */
-  var combineAndStoreResults = function(metadata, content) {
+  var combineAndStoreResults = function(metadata, content, revision, comments) {
     var file = {
       metadata: metadata,
-      content: content
+      content: content,
+      revision: revision,
+      comments: comments
     };
     cache.put(metadata.id, file);
     return file;
@@ -55,15 +59,24 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
     return googleApi.then(function(gapi) {
       var metadataRequest = gapi.client.drive.files.get({
         fileId: fileId,
-        fields: DEFAULT_FIELDS
+        fields: DEFAULT_FILE_FIELDS
       });
       var contentRequest = gapi.client.drive.files.get({
         fileId: fileId,
         alt: 'media'
       });
-      return $q.all([$q.when(metadataRequest), $q.when(contentRequest)]);
+      var revisionRequest = gapi.client.drive.revisions.get({
+        fileId: fileId,
+        fields: DEFAULT_REVISION_FIELDS,
+        revisionId: 'head'
+      });
+      var commentsRequest = gapi.client.drive.comments.list({
+        fileId: fileId,
+        fields: DEFAULT_COMMENT_FIELDS
+      });
+      return $q.all([$q.when(metadataRequest), $q.when(contentRequest), $q.when(revisionRequest), $q.when(commentsRequest)]);
     }).then(function(responses) {
-      return combineAndStoreResults(responses[0].result, responses[1].body);
+      return combineAndStoreResults(responses[0].result, responses[1].body, JSON.parse(responses[2].body), JSON.parse(responses[3].body).items);
     });
   };
 
@@ -97,16 +110,34 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
         method: method,
         params: {
           uploadType: 'multipart',
-          fields: DEFAULT_FIELDS
+          fields: DEFAULT_FILE_FIELDS
         },
         headers: { 'Content-Type' : multipart.type },
         body: multipart.body
       });
       return $q.when(uploadRequest);
     }).then(function(response) {
+      // TODO: This function call will no longer work
       return combineAndStoreResults(response.result, content);
     });
   };
+  
+  
+  this.addComment = function(fileId, comment) {
+    return googleApi.then(function(gapi) {
+      var body = {
+        content: comment.content,
+        anchor:  JSON.stringify(comment.anchor)
+      }
+      var insertCommentRequest = gapi.client.drive.comments.insert({
+        fileId: fileId,
+        resource: body
+      });
+      return $q.when(insertCommentRequest);
+    }).then(function(response) {
+      console.log(response);
+    });
+  }
 
   /**
    * Displays the Drive file picker configured for selecting text files
@@ -118,13 +149,12 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
       var deferred = $q.defer();
       var view = new google.picker.DocsView;
       view.setIncludeFolders(true);
-      view.setMimeTypes('text/x-python');
+      // view.setMimeTypes('text/x-python');
       var picker = new google.picker.PickerBuilder()
         .setAppId(applicationId)
         .setOAuthToken(gapi.auth.getToken().access_token)
         .addView(view)
         .setCallback(function(data) {
-          console.log(data);
           if (data.action == 'picked') {
             var id = data.docs[0].id;
             deferred.resolve(id);

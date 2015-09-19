@@ -1,3 +1,8 @@
 .code-editor {
   height: 400px;
 }
+
+.comment-range {
+  background: rgba(221, 239, 15, 0.63);
+  position: absolute;
+}
