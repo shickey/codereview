@@ -51,10 +51,10 @@ angular.module('codeReviewApp')
         var anchor = JSON.parse(comment.anchor).a[0].txt;
         var session = $scope.editor.getSession();
         var doc = session.getDocument();
-        var startRowColumn = doc.indexToPosition(anchor.o);
-        var endRowColumn = doc.indexToPosition(anchor.o + anchor.l);
+        var start = doc.indexToPosition(anchor.o);
+        var end = doc.indexToPosition(anchor.o + anchor.l);
         var Range = require('ace/range').Range;
-        var range = new Range(startRowColumn.row, startRowColumn.column, endRowColumn.row, endRowColumn.column);
+        var range = new Range(start.row, start.column, end.row, end.column);
         session.addMarker(range, 'comment-range', 'text');
       }
     });

@@ -135,7 +135,10 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
       });
       return $q.when(insertCommentRequest);
     }).then(function(response) {
-      console.log(response);
+      var cachedFile = cache.get(fileId);
+      if (cachedFile && cachedFile.comments) {
+        cachedFile.comments.push(JSON.parse(response.body))
+      };
     });
   }
 
