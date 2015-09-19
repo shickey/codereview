@@ -16,9 +16,9 @@ angular.module('codeReviewApp')
     $scope.commentText = '';
     
     $scope.addNewComment = function() {
-      // TODO: Check for empty selection and empty comment
-      var selection = $scope.editor.getSelectionRange();
-      $scope.addComment(selection, $scope.commentText);
+      var selectionRange = $scope.editor.getSelectionRange();
+      if (selectionRange.isEmpty() || !$scope.commentText) { return; }
+      $scope.addComment(selectionRange, $scope.commentText);
     };
     
     $scope.aceLoaded = function(editor) {
@@ -48,11 +48,11 @@ angular.module('codeReviewApp')
         var comment = newComments[i];
         if (!comment.hasOwnProperty('anchor')) { continue; }
         
-        var anchor = JSON.parse(comment.anchor).a[0].txt;
+        var anchorPosition = comment.anchor.a[0].txt;
         var session = $scope.editor.getSession();
         var doc = session.getDocument();
-        var start = doc.indexToPosition(anchor.o);
-        var end = doc.indexToPosition(anchor.o + anchor.l);
+        var start = doc.indexToPosition(anchorPosition.o);
+        var end = doc.indexToPosition(anchorPosition.o + anchorPosition.l);
         var Range = require('ace/range').Range;
         var range = new Range(start.row, start.column, end.row, end.column);
         session.addMarker(range, 'comment-range', 'text');

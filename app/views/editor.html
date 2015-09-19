@@ -4,7 +4,7 @@
   </div>
   <div class="col-md-3">
   
-    <div class="panel panel-default" ng-repeat="comment in file.comments">
+    <div class="panel panel-default" ng-repeat="comment in file.comments | orderBy:'anchor.a[0].txt.o'">
       <div class="panel-heading">
         <h3 class="panel-title">{{comment.author.displayName}}</h3>
       </div>

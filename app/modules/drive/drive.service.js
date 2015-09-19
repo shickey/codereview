@@ -76,7 +76,12 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
       });
       return $q.all([$q.when(metadataRequest), $q.when(contentRequest), $q.when(revisionRequest), $q.when(commentsRequest)]);
     }).then(function(responses) {
-      return combineAndStoreResults(responses[0].result, responses[1].body, JSON.parse(responses[2].body), JSON.parse(responses[3].body).items);
+      var comments = JSON.parse(responses[3].body).items;
+      comments.forEach(function(comment) {
+        if (!comment.anchor) { return; };
+        comment.anchor = JSON.parse(comment.anchor);
+      });
+      return combineAndStoreResults(responses[0].result, responses[1].body, JSON.parse(responses[2].body), comments);
     });
   };
 
@@ -137,7 +142,11 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
     }).then(function(response) {
       var cachedFile = cache.get(fileId);
       if (cachedFile && cachedFile.comments) {
-        cachedFile.comments.push(JSON.parse(response.body))
+        var comment = JSON.parse(response.body);
+        if (comment.anchor) {
+          comment.anchor = JSON.parse(comment.anchor);
+        };
+        cachedFile.comments.push(comment);
       };
     });
   }
