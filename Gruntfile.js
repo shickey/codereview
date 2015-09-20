@@ -441,4 +441,6 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.option('color', false);
 };

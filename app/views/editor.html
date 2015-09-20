@@ -4,12 +4,16 @@
   </div>
   <div class="col-md-3">
   
-    <div class="panel panel-default" ng-repeat="comment in file.comments | orderBy:'anchor.a[0].txt.o'">
-      <div class="panel-heading">
-        <h3 class="panel-title">{{comment.author.displayName}}</h3>
-      </div>
-      <div class="panel-body">
-        {{comment.content}}
+    <div ng-repeat="comment in commentsVM | orderBy:'anchorPoint.o'">
+      <div class="panel" ng-model="comment" ng-class=" comment.selected ? 'panel-warning' : 'panel-default'">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{comment.displayName}}</h3>
+        </div>
+        <div class="panel-body">
+          {{comment.content}}
+          <br />
+          {{comment.selected}}
+        </div>
       </div>
     </div>
     
