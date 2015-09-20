@@ -25,9 +25,24 @@ angular.module('codeReviewApp')
       editor.setReadOnly(true);
       editor.setHighlightActiveLine(false);
       editor.$blockScrolling = Infinity; // (Suggested) hack to fix console warning
+      editor.selection.on('changeCursor', cursorChanged);
       $scope.editor = editor;
       
       loadFile();
+    };
+    
+    var cursorChanged = function(e) {
+      var cursor = $scope.editor.selection.getCursor();
+      var offset = $scope.editor.getSession().getDocument().positionToIndex(cursor);
+      var markers = $scope.editor.getSession().getMarkers();
+      for (var markerId in markers) {
+        var marker = markers[markerId];
+        if (marker.clazz === "comment-range") {
+          if (marker.range.contains(cursor.row, cursor.column)) {
+            console.log($scope.editor.getSession().getDocument().getTextRange(marker.range));
+          };
+        };
+      };
     };
     
     var loadFile = function() {
