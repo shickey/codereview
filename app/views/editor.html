@@ -4,16 +4,12 @@
   </div>
   <div class="col-md-3">
   
-    <div ng-repeat="comment in commentsVM | orderBy:'anchorPoint.o'">
-      <div class="panel" ng-model="comment" ng-class=" comment.selected ? 'panel-warning' : 'panel-default'">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{comment.displayName}}</h3>
-        </div>
-        <div class="panel-body">
-          {{comment.content}}
-          <br />
-          {{comment.selected}}
-        </div>
+    <div class="panel" ng-repeat="comment in commentsVM | orderBy:'anchorPoint.o'" ng-class="comment.selected ? 'panel-warning' : 'panel-default'">
+      <div class="panel-heading" dumb-click="selectComment(comment)">
+        <h3 class="panel-title">{{comment.displayName}}</h3>
+      </div>
+      <div class="panel-body">
+        {{comment.content}}
       </div>
     </div>
     

@@ -7,6 +7,24 @@
  * # EditorCtrl
  * Controller of the codeReviewApp
  */
+ 
+angular.module('codeReviewApp')
+  .directive('dumbClick', function() {
+    
+    var link = function(scope, element, attrs) {
+      element.on('click', scope.dumbClick);
+    };
+    
+    return {
+      restrict: 'A',
+      link: link,
+      scope: {
+        dumbClick: '&'
+      }
+    }
+    
+  });
+ 
 angular.module('codeReviewApp')
   .controller('EditorCtrl', ['$scope', '$routeParams', 'drive', function($scope, $routeParams, drive) {
     
@@ -38,24 +56,27 @@ angular.module('codeReviewApp')
       
     };
     
+    $scope.selectComment = function(commentVM) {
+      $scope.editor.selection.setSelectionAnchor(commentVM.marker.range.start.row, commentVM.marker.range.start.column);
+      $scope.editor.selection.moveCursorToPosition(commentVM.marker.range.start);
+    }
+    
     var cursorChanged = function() {
-      $scope.$apply(function() {
         
-        var cursor = $scope.editor.selection.getCursor();
-        
-        for (var i = 0; i < $scope.commentsVM.length; ++i) {
-          var comment = $scope.commentsVM[i];
-          var marker = comment.marker;
-          if (marker.range.contains(cursor.row, cursor.column)) {
-            comment.selected = true;
-            console.log(comment.content);
-          }
-          else {
-            comment.selected = false;
-          }
-        };
-        
-      });
+        $scope.$apply(function(){
+          var cursor = $scope.editor.selection.getCursor();
+          
+          $scope.commentsVM.forEach(function(comment) {
+            var marker = comment.marker;
+            if (marker.range.contains(cursor.row, cursor.column)) {
+              comment.selected = true;
+              console.log(comment.content);
+            }
+            else {
+              comment.selected = false;
+            }
+          });
+        })
       
     };
     
