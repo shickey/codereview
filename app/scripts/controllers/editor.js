@@ -45,6 +45,7 @@ angular.module('codeReviewApp')
       editor.setReadOnly(true);
       editor.setHighlightActiveLine(false);
       editor.$blockScrolling = Infinity; // (Suggested) hack to fix console warning
+      editor.renderer.setAnimatedScroll(true);
       $scope.editor = editor;
       
       loadFile().then(function() {
@@ -59,6 +60,7 @@ angular.module('codeReviewApp')
     $scope.selectComment = function(commentVM) {
       $scope.editor.selection.setSelectionAnchor(commentVM.marker.range.start.row, commentVM.marker.range.start.column);
       $scope.editor.selection.moveCursorToPosition(commentVM.marker.range.start);
+      $scope.editor.scrollToLine(commentVM.marker.range.start.row, true, true, null);
     }
     
     var cursorChanged = function() {
@@ -66,16 +68,35 @@ angular.module('codeReviewApp')
         $scope.$apply(function(){
           var cursor = $scope.editor.selection.getCursor();
           
+          var commentScrollYTarget = null;
+          var firstSelectedComment = null;
+          
           $scope.commentsVM.forEach(function(comment) {
             var marker = comment.marker;
             if (marker.range.contains(cursor.row, cursor.column)) {
+              var newY = $scope.editor.renderer.textToScreenCoordinates(cursor.row, cursor.column).pageY;
+              if (!commentScrollYTarget || newY < commentScrollYTarget) {
+                commentScrollYTarget = newY < 72.0 ? 72.0 : newY;
+              };
+              if (!firstSelectedComment || comment.marker.range.start.row < firstSelectedComment.marker.range.start.row) {
+                firstSelectedComment = comment;
+              };
               comment.selected = true;
-              console.log(comment.content);
+              marker.clazz = "comment-range-selected";
             }
             else {
               comment.selected = false;
+              marker.clazz = "comment-range";
             }
           });
+          
+          $scope.editor.updateSelectionMarkers();
+          
+          if (firstSelectedComment) {
+            var el = angular.element(document.querySelector('#comments-list'));
+            el.css({top: -commentScrollYTarget});
+          };
+          
         })
       
     };
