@@ -1,18 +1,9 @@
 <div class="row">
   <div class="col-md-7 col-md-offset-1">
-    <div class="code-editor" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+    <code-editor code="file.content" comments="comments" cursor-change="cursorChanged(offset)"></code-editor>
   </div>
   <div class="col-md-3">
-    <div id="comments-list">
-      <div class="panel" ng-repeat="comment in commentsVM | orderBy:'anchorPoint.o'" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" dumb-click="selectComment(comment)">
-        <div class="panel-heading">
-          <h3 class="panel-title">{{comment.displayName}}</h3>
-        </div>
-        <div class="panel-body">
-          {{comment.content}}
-        </div>
-      </div>
-    </div>
+    <comment-list comments="comments"></comment-list>
   </div>
 </div>
 <div class="row">
