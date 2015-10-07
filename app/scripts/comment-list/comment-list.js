@@ -4,7 +4,8 @@ angular.module('codeReviewApp')
   .directive('commentList', function() {
     return {
       scope: {
-        comments: '='
+        comments: '=',
+        selectComment: '&'
       },
       templateUrl: 'scripts/comment-list/comment-list.html',
       replace: true,
@@ -12,6 +13,10 @@ angular.module('codeReviewApp')
       controllerAs: 'ctrl'
     };
   })
-  .controller('CommentListCtrl', function() {
+  .controller('CommentListCtrl', ['$scope', function($scope) {
+    $scope.selectComment = function(comment) {
+      if (!comment) { return; }
+      $scope.selectComment(comment);
+    };
     
-  });
+  }]);

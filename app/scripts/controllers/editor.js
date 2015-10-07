@@ -18,7 +18,6 @@ angular.module('codeReviewApp')
     $scope.offset = 0;
     
     $scope.selectComment = function(comment) {
-      console.log("hello world!");
       $scope.offset = comment.offset;
     }
     
@@ -105,30 +104,6 @@ angular.module('codeReviewApp')
       });
     };
     
-    var rangeFromAnchorPoint = function(anchorPoint) {
-      var Range = require('ace/range').Range;
-      
-      var doc = $scope.editor.getSession().getDocument();
-      var start = doc.indexToPosition(anchorPoint.o);
-      var end = doc.indexToPosition(anchorPoint.o + anchorPoint.l);
-      
-      var range = new Range(start.row, start.column, end.row, end.column);
-      return range;
-    };
-    
-    var anchorPointFromRange = function(range) {
-      var doc = $scope.editor.getSession().getDocument();
-      var offset = doc.positionToIndex(range.start);
-      var endOffset = doc.positionToIndex(range.end);
-      var length = endOffset - offset;
-      
-      return {
-        o: offset,
-        l: length,
-        ml: +($scope.file.revision.fileSize)
-      }
-    }
-    
     $scope.$watchCollection('file.comments', function(newComments) {
       if (!newComments) { return; }
       newComments.forEach(function(comment) {
@@ -144,7 +119,9 @@ angular.module('codeReviewApp')
         };
         
         $scope.comments.push(commentModel);
-          
+      });
+      $scope.comments.sort(function(comment1, comment2) {
+        return (comment1.offset) - (comment2.offset);
       });
     });
     

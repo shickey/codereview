@@ -1,3 +1,10 @@
-<div ng-repeat="comment in comments | orderBy:'anchorPoint.o'" >
-  <comment-list-item comment="comment"></comment-list-item>
+<div ng-repeat="comment in comments" >
+  <div class="panel" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{comment.authorName}}</h3>
+    </div>
+    <div class="panel-body">
+      {{comment.content}}
+    </div>
+  </div>
 </div>
