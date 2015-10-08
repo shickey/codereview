@@ -3,19 +3,13 @@
 angular.module('codeReviewApp')
   .directive('codeEditor', function() {
     return {
-      scope: {
-        code: '=',
-        comments: '=',
-        cursorChange: '&',
-        offset: '='
-      },
       templateUrl: 'scripts/code-editor/code-editor.html',
       replace: true,
       controller: 'CodeEditorCtrl',
       controllerAs: 'ctrl'
     };
   })
-  .controller('CodeEditorCtrl', ['$scope', function($scope) {
+  .controller('CodeEditorCtrl', ['$scope', '$timeout', function($scope, $timeout) {
     
     var Range = require('ace/range').Range;
     
@@ -26,52 +20,46 @@ angular.module('codeReviewApp')
       _editor.setHighlightActiveLine(false);
       _editor.$blockScrolling = Infinity; // (Suggested) hack to fix console warning
       _editor.renderer.setAnimatedScroll(true);
-      _editor.selection.on('changeCursor', emitCursorChangeEvent);
+      _editor.selection.on('changeCursor', changeCursor);
       $scope.editor = _editor;
     };
     
-    $scope.$watch('code', function(val) {
-      if (!($scope.editor)) { return; }
-      $scope.editor.setValue(val);
-      $scope.editor.clearSelection();
-      refreshComments();
-    });
+    $scope.shouldUpdateCursor = true;
     
-    $scope.$watchCollection('comments', function() {
-      refreshComments();
-    });
+    var changeCursor = function() {
+      var cursor = $scope.editor.selection.getCursor();
+      var offset = $scope.editor.session.doc.positionToIndex(cursor);
+      $timeout(function() { 
+        $scope.shouldUpdateCursor = false;
+        $scope.selectCommentsAtOffset(offset);
+      });
+    };
     
-    $scope.$watch('offset', function(newOffset) {
-      console.log('offset changed!');
-      var selection = $scope.editor.selection;
-      selection.off('changeCursor', emitCursorChangeEvent);
-      
-      var range = rangeFromAnchorPoint(newOffset, 0);
+    $scope.$watch('selectedComments', function(selectedComments) {
+      if (!$scope.shouldUpdateCursor) {
+        $scope.shouldUpdateCursor = true;
+        return;
+      }
+      if (selectedComments.length == 0) { return; }
+      var selection = $scope.editor.selection
+      selection.off('changeCursor', changeCursor);
+
+      var lastComment = selectedComments[selectedComments.length - 1];
+      var offset = lastComment.offset;
+      var range = rangeFromAnchorPoint(offset, 0);
       selection.setSelectionAnchor(range.start.row, range.start.column);
       selection.moveCursorToPosition(range.start);
       $scope.editor.scrollToLine(range.start.row, true, true, null);
-      
-      selection.on('changeCursor', emitCursorChangeEvent);
+      $timeout(function() {
+        selection.on('changeCursor', changeCursor);
+      })
     });
     
-    var emitCursorChangeEvent = function() {
-      $scope.$apply(function() {
-        var cursor = $scope.editor.selection.getCursor();
-        var offset = $scope.editor.session.doc.positionToIndex(cursor);
-        $scope.cursorChange({offset: offset});
-      });
-    };
-    
-    var refreshComments = function() {
-      var session = $scope.editor.session;
-      var markers = session.getMarkers();
-      for (var markerId in markers) {
-        session.removeMarker(markerId);
-      }
-      $scope.comments.forEach(function(comment) {
+    $scope.$watchCollection('comments', function(newComments) {
+      newComments.forEach(function(comment) {
         addCommentMarker(comment);
       });
-    };
+    })
     
     var addCommentMarker = function(comment) {
       var range = rangeFromAnchorPoint(comment.offset, comment.len);

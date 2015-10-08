@@ -14,20 +14,17 @@ angular.module('codeReviewApp')
     $scope.file = null;
     
     $scope.comments = [];
-    
-    $scope.offset = 0;
+    $scope.selectedComments = [];
     
     $scope.selectComment = function(comment) {
-      $scope.offset = comment.offset;
-    }
+      $scope.selectCommentsAtOffset(comment.offset);
+    };
     
-    var commentRangeIncludesOffset = function(comment, offset) {
-      return offset >= comment.offset && offset < (comment.offset + comment.len);
-    }
-    
-    var updateSelectionsForOffset = function(offset) {
+    $scope.selectCommentsAtOffset = function(offset) {
+      $scope.selectedComments = [];
       $scope.comments.forEach(function(comment) {
         if (commentRangeIncludesOffset(comment, offset)) {
+          $scope.selectedComments.push(comment);
           comment.selected = true;
         }
         else {
@@ -36,13 +33,10 @@ angular.module('codeReviewApp')
       });
     };
     
-    $scope.$watch('offset', function(newOffset) {
-      updateSelectionsForOffset(newOffset);
-    });
-    
-    $scope.cursorChanged = function(offset) {
-      $scope.offset = offset;
+    var commentRangeIncludesOffset = function(comment, offset) {
+      return offset >= comment.offset && offset < (comment.offset + comment.len);
     };
+    
     
     // $scope.addNewComment = function() {
     //   var selectionRange = $scope.editor.getSelectionRange();
@@ -50,12 +44,6 @@ angular.module('codeReviewApp')
     //   $scope.addComment(selectionRange, $scope.commentText);
     // };
     
-    
-    // $scope.selectComment = function(commentVM) {
-    //   $scope.editor.selection.setSelectionAnchor(commentVM.marker.range.start.row, commentVM.marker.range.start.column);
-    //   $scope.editor.selection.moveCursorToPosition(commentVM.marker.range.start);
-    //   $scope.editor.scrollToLine(commentVM.marker.range.start.row, true, true, null);
-    // }
     
     // var cursorChanged = function() {
         
