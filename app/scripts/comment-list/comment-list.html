@@ -1,5 +1,5 @@
-<div ng-repeat="comment in comments" >
-  <div class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
+<div id="comment-list">
+  <div ng-repeat="comment in comments" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
     <div class="panel-heading">
       <h3 class="panel-title">{{comment.authorName}}</h3>
     </div>
