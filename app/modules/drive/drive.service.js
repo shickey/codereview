@@ -22,7 +22,7 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
 
   // Only fetch fields that we care about
   var DEFAULT_FILE_FIELDS = 'id,title,mimeType,userPermission,editable,copyable,shared,fileSize,downloadUrl';
-  var DEFAULT_COMMENT_FIELDS = 'items(anchor,author,content)';
+  var DEFAULT_COMMENT_FIELDS = 'items(anchor,author,commentId,content)';
   var DEFAULT_REVISION_FIELDS = 'fileSize,id';
 
   var cache = $cacheFactory('files');

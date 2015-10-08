@@ -40,7 +40,7 @@ angular.module('codeReviewApp')
         $scope.shouldUpdateCursor = true;
         return;
       }
-      if (selectedComments.length == 0) { return; }
+      if (selectedComments.length === 0) { return; }
       var selection = $scope.editor.selection
       selection.off('changeCursor', changeCursor);
 

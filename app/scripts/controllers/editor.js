@@ -97,8 +97,9 @@ angular.module('codeReviewApp')
       newComments.forEach(function(comment) {
         if (!comment.hasOwnProperty('anchor')) { return; }
         var anchorPoint = comment.anchor.a[0].txt;
-        
+
         var commentModel = {
+          id: comment.commentId,
           offset: anchorPoint.o,
           len: anchorPoint.l,
           content: comment.content,
