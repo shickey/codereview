@@ -19,5 +19,6 @@ angular
     'ngAria',
     'ui.ace',
     'drive',
-    'login'
+    'login',
+    'uuid'
   ]);

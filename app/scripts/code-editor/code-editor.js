@@ -56,7 +56,14 @@ angular.module('codeReviewApp')
     });
     
     $scope.$watchCollection('comments', function(newComments) {
-      newComments.forEach(function(comment) {
+      // Just do the simple/dumb thing of clearing all the markers
+      // and redrawing them all
+      debugger;
+      var markerIds = $scope.editor.session.getMarkers();
+      for (var markerId in markerIds) {
+        $scope.editor.session.removeMarker(markerId);
+      }
+      $scope.comments.forEach(function(comment) {
         addCommentMarker(comment);
       });
     })
@@ -73,6 +80,26 @@ angular.module('codeReviewApp')
       
       var range = new Range(start.row, start.column, end.row, end.column);
       return range;
+    };
+    
+    var anchorPointFromRange = function(range) {
+      var doc = $scope.editor.getSession().getDocument();
+      var offset = doc.positionToIndex(range.start);
+      var endOffset = doc.positionToIndex(range.end);
+      var length = endOffset - offset;
+      
+      return {
+        o: offset,
+        l: length,
+        ml: +($scope.file.revision.fileSize)
+      }
+    };
+    
+    $scope.insertCommentAtSelection = function() {
+      var selectionRange = $scope.editor.getSelectionRange();
+      if (selectionRange.isEmpty()) { return; }
+      var anchorPoint = anchorPointFromRange(selectionRange);
+      $scope.insertComment(anchorPoint.o, anchorPoint.l)
     };
     
   }]);

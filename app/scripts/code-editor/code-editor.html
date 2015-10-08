@@ -1,1 +1,4 @@
-<div class="code-editor" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+<div>
+  <div class="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+  <button class="btn btn-warning" ng-click="insertCommentAtSelection()">Add Comment</button>
+</div>
