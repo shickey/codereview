@@ -21,6 +21,7 @@ angular.module('codeReviewApp')
       _editor.$blockScrolling = Infinity; // (Suggested) hack to fix console warning
       _editor.renderer.setAnimatedScroll(true);
       _editor.selection.on('changeCursor', changeCursor);
+      _editor.on('change', redrawCommentMarkers);
       $scope.editor = _editor;
     };
     
@@ -55,7 +56,11 @@ angular.module('codeReviewApp')
       })
     });
     
-    $scope.$watchCollection('comments', function(newComments) {
+    $scope.$watchCollection('comments', function() {
+      redrawCommentMarkers();
+    });
+    
+    var redrawCommentMarkers = function() {
       // Just do the simple/dumb thing of clearing all the markers
       // and redrawing them all
       var markerIds = $scope.editor.session.getMarkers();
@@ -65,7 +70,7 @@ angular.module('codeReviewApp')
       $scope.comments.forEach(function(comment) {
         addCommentMarker(comment);
       });
-    })
+    };
     
     var addCommentMarker = function(comment) {
       var range = rangeFromAnchorPoint(comment.offset, comment.len);
