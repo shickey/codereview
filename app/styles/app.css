@@ -6,3 +6,7 @@
   background: rgba(221, 239, 15, 0.63);
   position: absolute;
 }
+
+#comment-list {
+  position: relative;
+}

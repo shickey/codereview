@@ -58,7 +58,6 @@ angular.module('codeReviewApp')
     $scope.$watchCollection('comments', function(newComments) {
       // Just do the simple/dumb thing of clearing all the markers
       // and redrawing them all
-      debugger;
       var markerIds = $scope.editor.session.getMarkers();
       for (var markerId in markerIds) {
         $scope.editor.session.removeMarker(markerId);
