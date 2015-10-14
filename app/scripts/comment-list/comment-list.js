@@ -15,8 +15,7 @@ angular.module('codeReviewApp')
       var commentId = selectedComments[0].id;
       var commentEl = angular.element(document.querySelector('#comment-' + commentId));
       var top = commentEl.position().top;
-      var listEl = angular.element(document.querySelector('#comment-list'));
-      listEl.css({top: -top});
+      $("body").animate({scrollTop: top - 40});
     });
     
   }]);

@@ -18,7 +18,8 @@ angular
     'ngTouch',
     'ngAria',
     'ui.ace',
+    'ui.scrollpoint',
     'drive',
     'login',
-    'uuid'
+    'uuid',
   ]);
