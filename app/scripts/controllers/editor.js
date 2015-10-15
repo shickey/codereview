@@ -50,6 +50,7 @@ angular.module('codeReviewApp')
       $scope.comments.sort(function(comment1, comment2) {
         return (comment1.offset) - (comment2.offset);
       });
+      $scope.selectCommentsAtOffset(offset);
     };
     
     $scope.saveComment = function(unsavedComment) {

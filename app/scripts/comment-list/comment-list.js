@@ -8,14 +8,16 @@ angular.module('codeReviewApp')
       controllerAs: 'ctrl'
     };
   })
-  .controller('CommentListCtrl', ['$scope', function($scope) {
+  .controller('CommentListCtrl', ['$scope', '$timeout', function($scope, $timeout) {
     
     $scope.$watch('selectedComments', function(selectedComments) {
       if (selectedComments.length === 0) { return; }
-      var commentId = selectedComments[0].id;
-      var commentEl = angular.element(document.querySelector('#comment-' + commentId));
-      var top = commentEl.position().top;
-      $("body").animate({scrollTop: top - 40});
+      $timeout(function() {
+        var commentId = selectedComments[0].id;
+        var commentEl = angular.element(document.querySelector('#comment-' + commentId));
+        var top = commentEl.position().top;
+        $("body").animate({scrollTop: top - 40});
+      });
     });
     
   }]);
