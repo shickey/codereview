@@ -15,7 +15,12 @@ body {
 }
 
 .comment-range {
-  background: rgba(221, 239, 15, 0.63);
+  background: rgba(255, 255, 255, 0.3);
+  position: absolute;
+}
+
+.comment-range-selected {
+  background: rgba(255, 255, 255, 0.6);
   position: absolute;
 }
 

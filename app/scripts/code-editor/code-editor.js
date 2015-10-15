@@ -14,6 +14,8 @@ angular.module('codeReviewApp')
     var Range = require('ace/range').Range;
     
     $scope.editor = null;
+    $scope.shouldUpdateCursor = true;
+    $scope.isRangeSelected = false;
     
     $scope.aceLoaded = function(_editor) {
       _editor.setReadOnly(true);
@@ -21,11 +23,10 @@ angular.module('codeReviewApp')
       _editor.$blockScrolling = Infinity; // (Suggested) hack to fix console warning
       _editor.renderer.setAnimatedScroll(true);
       _editor.selection.on('changeCursor', changeCursor);
+      _editor.selection.on('changeSelection', changeSelection);
       _editor.on('change', redrawCommentMarkers);
       $scope.editor = _editor;
     };
-    
-    $scope.shouldUpdateCursor = true;
     
     var changeCursor = function() {
       var cursor = $scope.editor.selection.getCursor();
@@ -33,6 +34,19 @@ angular.module('codeReviewApp')
       $timeout(function() { 
         $scope.shouldUpdateCursor = false;
         $scope.selectCommentsAtOffset(offset);
+        redrawCommentMarkers();
+      });
+    };
+    
+    var changeSelection = function() {
+      var selectionRange = $scope.editor.selection.getRange();
+      if (selectionRange.isEmpty()) {
+        $scope.isRangeSelected = false;
+      }
+      else {
+        $scope.isRangeSelected = true;
+      }
+      $timeout(function(){
         redrawCommentMarkers();
       });
     };
