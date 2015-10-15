@@ -67,7 +67,10 @@ angular.module('codeReviewApp')
       // and redrawing them all
       var markerIds = $scope.editor.session.getMarkers();
       for (var markerId in markerIds) {
-        $scope.editor.session.removeMarker(markerId);
+        var clazz = markerIds[markerId].clazz
+        if (clazz == "comment-range" || clazz == "comment-range-selected") {
+          $scope.editor.session.removeMarker(markerId);
+        }
       }
       $scope.comments.forEach(function(comment) {
         addCommentMarker(comment);
