@@ -33,6 +33,7 @@ angular.module('codeReviewApp')
       $timeout(function() { 
         $scope.shouldUpdateCursor = false;
         $scope.selectCommentsAtOffset(offset);
+        redrawCommentMarkers();
       });
     };
     
@@ -74,7 +75,12 @@ angular.module('codeReviewApp')
     
     var addCommentMarker = function(comment) {
       var range = rangeFromAnchorPoint(comment.offset, comment.len);
-      $scope.editor.session.addMarker(range, 'comment-range', 'text');
+      if (comment.selected) {
+        $scope.editor.session.addMarker(range, 'comment-range-selected', 'text');
+      }
+      else {
+        $scope.editor.session.addMarker(range, 'comment-range', 'text');
+      }
     };
     
     var rangeFromAnchorPoint = function(offset, len) {
