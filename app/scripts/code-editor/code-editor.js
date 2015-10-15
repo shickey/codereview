@@ -52,6 +52,7 @@ angular.module('codeReviewApp')
       selection.setSelectionAnchor(range.start.row, range.start.column);
       selection.moveCursorToPosition(range.start);
       $scope.editor.scrollToLine(range.start.row, true, true, null);
+      redrawCommentMarkers();
       $timeout(function() {
         selection.on('changeCursor', changeCursor);
       })
