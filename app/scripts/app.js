@@ -22,4 +22,5 @@ angular
     'drive',
     'login',
     'uuid',
+    'hc.marked'
   ]);
