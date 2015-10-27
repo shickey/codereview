@@ -26,7 +26,7 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   var DEFAULT_REVISION_FIELDS = 'fileSize,id';
 
   var cache = $cacheFactory('files');
-
+  
   /**
    * Combines metadata & content into a single object & caches the result
    *
@@ -35,11 +35,19 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
    * @return {Object} combined object
    */
   var combineAndStoreResults = function(metadata, content, revision, comments) {
+    var permission = metadata.userPermission;
+    var canEdit = (permission.role === "owner" || permission.role === "writer");
+    var canComment = canEdit || (permission.role === "reader" && permission.additionalRoles && permission.additionalRoles.indexOf("commenter") >= 0)
+    var permissions = {
+      userCanEdit: canEdit,
+      userCanComment: canComment
+    };
     var file = {
       metadata: metadata,
       content: content,
       revision: revision,
-      comments: comments
+      comments: comments,
+      permissions: permissions
     };
     cache.put(metadata.id, file);
     return file;
