@@ -21,6 +21,7 @@ angular
     'ui.scrollpoint',
     'drive',
     'login',
+    'gapi_user',
     'uuid',
     'hc.marked'
   ]);

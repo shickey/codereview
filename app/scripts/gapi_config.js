@@ -14,5 +14,6 @@ angular.module('codeReviewApp')
   .constant('applicationId', '669299579698')
   .constant('scope', ['email', 'profile', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/drive.install'])
   .constant('loadApis', {
-    'drive' : 'v2'
+    'drive' : 'v2',
+    'oauth2' : 'v2'
   });
