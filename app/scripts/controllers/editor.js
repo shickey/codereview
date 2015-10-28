@@ -44,7 +44,8 @@ angular.module('codeReviewApp')
         len: len,
         content: '',
         selected: false,
-        saved: false
+        saved: false,
+        editing: true
       };
       $scope.comments.push(commentModel);
       $scope.comments.sort(function(comment1, comment2) {
@@ -53,31 +54,36 @@ angular.module('codeReviewApp')
       $scope.selectCommentsAtOffset(offset);
     };
     
-    $scope.saveComment = function(unsavedComment) {
-      if (unsavedComment.saved) { return; }
+    $scope.saveComment = function(editingComment) {
+      if (editingComment.saved) {
+        drive.updateComment($routeParams.fileId, editingComment.id, editingComment.content).then(function() {
+          editingComment.editing = false;
+        });
+        return;
+      }
       
       var anchor = {
         r: $scope.file.revision.id,
         a: [{
           txt: {
-            o: unsavedComment.offset,
-            l: unsavedComment.len,
+            o: editingComment.offset,
+            l: editingComment.len,
             ml: +($scope.file.revision.fileSize)
           }
         }]
       };
       
       var comment = {
-        content: unsavedComment.content,
+        content: editingComment.content,
         anchor: anchor
       };
       
-      drive.addComment($routeParams.fileId, comment).then(function() {
-        $scope.removeComment(unsavedComment);
+      drive.insertComment($routeParams.fileId, comment).then(function() {
+        removeUnsavedComment(editingComment);
       });
     };
     
-    $scope.removeComment = function(commentToRemove) {
+    var removeUnsavedComment = function(commentToRemove) {
       var commentToRemoveId = commentToRemove.id;
       for (var i = 0; i < $scope.comments.length; ++i) {
         var comment = $scope.comments[i];
@@ -88,6 +94,24 @@ angular.module('codeReviewApp')
       };
     }
     
+    $scope.cancelEditing = function(editingComment) {
+      if (!editingComment.saved) {
+        removeUnsavedComment(editingComment);
+        return;
+      };
+      editingComment.content = editingComment.previousContent;
+      delete editingComment.previousContent;
+      editingComment.editing = false;
+    }
+    
+    $scope.beginEditing = function(commentToEdit) {
+      commentToEdit.editing = true;
+      commentToEdit.previousContent = commentToEdit.content;
+    };
+    
+    $scope.deleteComment = function(commentToDelete) {
+      drive.deleteComment($routeParams.fileId, commentToDelete.id);
+    }
     
     var loadFile = function() {
       var filePromise = drive.loadFile($routeParams.fileId);
@@ -100,6 +124,7 @@ angular.module('codeReviewApp')
     
     $scope.$watchCollection('file.comments', function(newComments) {
       if (!newComments) { return; }
+      $scope.comments = [];
       newComments.forEach(function(comment) {
         if (!comment.hasOwnProperty('anchor')) { return; }
         var anchorPoint = comment.anchor.a[0].txt;
@@ -110,8 +135,10 @@ angular.module('codeReviewApp')
           len: anchorPoint.l,
           content: comment.content,
           authorName: comment.author.displayName,
+          isAuthenticatedUser: comment.author.isAuthenticatedUser,
           selected: false,
-          saved: true
+          saved: true,
+          editing: false
         };
         
         $scope.comments.push(commentModel);

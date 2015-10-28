@@ -136,7 +136,7 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   };
   
   
-  this.addComment = function(fileId, comment) {
+  this.insertComment = function(fileId, comment) {
     return googleApi.then(function(gapi) {
       var body = {
         content: comment.content,
@@ -157,7 +157,49 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
         cachedFile.comments.push(comment);
       };
     });
-  }
+  };
+  
+  this.updateComment = function(fileId, commentId, newContent) {
+    return googleApi.then(function(gapi) {
+      var body = {content: newContent};
+      var patchCommentRequest = gapi.client.drive.comments.patch({
+        fileId: fileId,
+        commentId: commentId,
+        resource: body
+      });
+      return $q.when(patchCommentRequest);
+    }).then(function(response) {
+      var cachedFile = cache.get(fileId);
+      if (cachedFile && cachedFile.comments) {
+        cachedFile.comments.forEach(function(comment) {
+          if (comment.commentId === commentId) {
+            comment.content = newContent;
+          };
+        });
+      }
+    })
+  };
+  
+  this.deleteComment = function(fileId, commentId) {
+    return googleApi.then(function(gapi) {
+      var deleteCommentRequest = gapi.client.drive.comments.delete({
+        fileId: fileId,
+        commentId: commentId
+      });
+      return $q.when(deleteCommentRequest);
+    }).then(function(response) {
+      var cachedFile = cache.get(fileId);
+      if (cachedFile && cachedFile.comments) {
+        for (var i = 0; i < cachedFile.comments.length; ++i) {
+          var comment = cachedFile.comments[i];
+          if (comment.commentId === commentId) {
+            cachedFile.comments.splice(i, 1);
+            break;
+          }
+        }
+      }
+    });
+  };
 
   /**
    * Displays the Drive file picker configured for selecting text files
