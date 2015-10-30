@@ -23,9 +23,9 @@ module.exports = function(config) {
     files: [
       // bower:js
       'bower_components/jquery/dist/jquery.js',
-      'bower_components/ace-builds/src-min/ace.js',
       'bower_components/ace-builds/src-min/theme-monokai.js',
       'bower_components/ace-builds/src-min/mode-python.js',
+      'bower_components/ace-builds/src-min/ace.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-aria/angular-aria.js',
