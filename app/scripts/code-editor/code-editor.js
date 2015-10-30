@@ -3,7 +3,7 @@
 angular.module('codeReviewApp')
   .directive('codeEditor', function() {
     return {
-      templateUrl: 'scripts/code-editor/code-editor.html',
+      templateUrl: 'views/code-editor.html',
       replace: true,
       controller: 'CodeEditorCtrl',
       controllerAs: 'ctrl'

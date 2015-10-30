@@ -3,7 +3,7 @@
 angular.module('codeReviewApp')
   .directive('commentList', function() {
     return {
-      templateUrl: 'scripts/comment-list/comment-list.html',
+      templateUrl: 'views/comment-list.html',
       controller: 'CommentListCtrl',
       controllerAs: 'ctrl'
     };
