@@ -27,3 +27,7 @@ body {
 #comment-list {
   position: relative;
 }
+
+#code-output-panel {
+  margin-top: 20px;
+}

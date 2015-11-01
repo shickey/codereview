@@ -40,6 +40,8 @@ module.exports = function(config) {
       'bower_components/angular-ui-scrollpoint/dist/scrollpoint.js',
       'bower_components/angular-uuid-service/angular-uuid-service.js',
       'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/skulpt/skulpt.js',
+      'bower_components/skulpt/skulpt-stdlib.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

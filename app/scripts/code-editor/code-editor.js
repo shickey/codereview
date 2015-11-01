@@ -130,4 +130,29 @@ angular.module('codeReviewApp')
       $scope.insertComment(anchorPoint.o, anchorPoint.l)
     };
     
+    $scope.codeOutput = "";
+    
+    var codeOutputFunc = function(text) {
+      $scope.codeOutput += text;
+    };
+    
+    var clearOutput = function() {
+      $scope.codeOutput = "";
+    };
+    
+    $scope.runCode = function() {
+      clearOutput();
+      var code = $scope.file.content;
+      Sk.pre = "output";
+      Sk.configure({output: codeOutputFunc});
+      var promise = Sk.misceval.asyncToPromise(function() {
+        return Sk.importMainWithBody("<stdin>", false, code, true);
+      });
+      promise.then(function(mod) {
+        console.log('success');
+      }, function(err) {
+        console.log(err.toString());
+      });
+    };
+    
   }]);

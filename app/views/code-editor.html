@@ -1,4 +1,19 @@
-<div ui-scrollpoint class="ui-scrollpoint">
-  <div class="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
-  <button class="btn btn-warning" ng-show="file.permissions.userCanComment" ng-click="insertCommentAtSelection()" ng-disabled="!isRangeSelected">Add Comment</button>
+<div ui-scrollpoint class="row ui-scrollpoint">
+  <div class="col-md-12">
+    <div class="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+    <button class="btn btn-warning" ng-show="file.permissions.userCanComment" ng-click="insertCommentAtSelection()" ng-disabled="!isRangeSelected">Add Comment</button>
+    <button class="btn btn-primary" ng-click="runCode()">Run</button>
+  </div>
+  <div id="code-output-panel" class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Output
+      </div>
+      <div class="panel-body">
+        <!-- <div class="well"> -->
+          <pre id="code-editor-output">{{codeOutput}}</pre>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
 </div>
