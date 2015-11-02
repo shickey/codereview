@@ -136,8 +136,13 @@ angular.module('codeReviewApp')
       $scope.codeOutput += text;
     };
     
+    var errorOutputFunc = function(text) {
+      $scope.errorOutput += text;
+    }
+    
     var clearOutput = function() {
       $scope.codeOutput = "";
+      $scope.errorOutput = "";
     };
     
     $scope.runCode = function() {
@@ -152,6 +157,9 @@ angular.module('codeReviewApp')
         console.log('success');
       }, function(err) {
         console.log(err.toString());
+        $scope.$apply(function() {
+          errorOutputFunc(err.toString());
+        });
       });
     };
     

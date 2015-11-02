@@ -31,3 +31,7 @@ body {
 #code-output-panel {
   margin-top: 20px;
 }
+
+#code-editor-error-output {
+  color: red;
+}
