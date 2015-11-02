@@ -1,12 +1,3 @@
-# code-review
+# Code Review
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.11.1.
-
-## Build & development
-
-Run `grunt` for building and `grunt serve` for preview.
-
-## Testing
-
-Running `grunt test` will run the unit tests with karma.
+A simple Angular app built on top of the Google Drive API for commenting on code submitted by students. Comments support GitHub flavored markdown. Code is runnable in the browser via Skulpt.js.
