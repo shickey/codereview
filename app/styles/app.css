@@ -2,6 +2,11 @@ body {
   padding-top: 70px;
 }
 
+pre {
+  color: white;
+  background-color: #272822;
+}
+
 .code-editor {
   height: 400px;
   width: 100%;
