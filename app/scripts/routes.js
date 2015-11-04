@@ -32,6 +32,10 @@ angular.module('codeReviewApp')
         templateUrl: 'views/editor.html',
         controller: 'EditorCtrl'
       })
+      .whenAuthenticated('/folder/:folderId', {
+        templateUrl: 'views/folder.html',
+        controller: 'FolderCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

@@ -25,8 +25,14 @@ angular.module('codeReviewApp')
     };
     
     $scope.openFile = function() {
-      drive.showPicker().then(function(fileId) {
-        $location.path('/' + fileId);
+      drive.showPicker().then(function(result) {
+        if (result.type === 'file') {
+          $location.path('/' + result.id);
+        }
+        else if (result.type === 'folder') {
+          $location.path('/folder/' + result.id);
+        }
+        
       });
     };
     
