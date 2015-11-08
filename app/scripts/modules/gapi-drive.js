@@ -217,9 +217,9 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
         q: '\'' + folderId + '\' in parents' 
       });
     }).then(function(response) {
-      var parsed = JSON.parse(response.body);
-      folderCache.put(folderId, parsed);
-      return parsed.items;
+      var items = JSON.parse(response.body).items;
+      folderCache.put(folderId, items);
+      return items;
     });
   }
 

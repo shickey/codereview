@@ -19,6 +19,7 @@ angular
     'ngAria',
     'ui.ace',
     'ui.scrollpoint',
+    'ui.router',
     'drive',
     'login',
     'uuid',

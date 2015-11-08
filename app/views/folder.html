@@ -1,8 +1,10 @@
 <div class="row">
-  <div class="col-md-3">
-    <h1>Hello world!</h1>
+  <div class="col-md-2">
+    <div class="list-group">
+      <a class="list-group-item" ng-repeat="file in files" ui-sref="folder.file({folderId: folderId, fileId: file.id})">{{file.title}}</a>
+    </div>
   </div>
-  <div class="col-md-9">
-    
+  <div class="col-md-10">
+    <div ui-view></div>
   </div>
 </div>

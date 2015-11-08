@@ -9,7 +9,7 @@
  */
  
 angular.module('codeReviewApp')
-  .controller('EditorCtrl', ['$scope', '$routeParams', 'drive', 'rfc4122', function($scope, $routeParams, drive, rfc4122) {
+  .controller('EditorCtrl', ['$scope', '$stateParams', 'drive', 'rfc4122', function($scope, $stateParams, drive, rfc4122) {
     
     $scope.file = null;
     
@@ -56,7 +56,7 @@ angular.module('codeReviewApp')
     
     $scope.saveComment = function(editingComment) {
       if (editingComment.saved) {
-        drive.updateComment($routeParams.fileId, editingComment.id, editingComment.content).then(function() {
+        drive.updateComment($stateParams.fileId, editingComment.id, editingComment.content).then(function() {
           editingComment.editing = false;
         });
         return;
@@ -78,7 +78,7 @@ angular.module('codeReviewApp')
         anchor: anchor
       };
       
-      drive.insertComment($routeParams.fileId, comment).then(function() {
+      drive.insertComment($stateParams.fileId, comment).then(function() {
         removeUnsavedComment(editingComment);
       });
     };
@@ -110,11 +110,11 @@ angular.module('codeReviewApp')
     };
     
     $scope.deleteComment = function(commentToDelete) {
-      drive.deleteComment($routeParams.fileId, commentToDelete.id);
+      drive.deleteComment($stateParams.fileId, commentToDelete.id);
     }
     
     var loadFile = function() {
-      var filePromise = drive.loadFile($routeParams.fileId);
+      var filePromise = drive.loadFile($stateParams.fileId);
       return filePromise.then(function(file) {
         $scope.file = file;
       }, function() {

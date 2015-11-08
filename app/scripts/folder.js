@@ -9,10 +9,13 @@
  */
  
 angular.module('codeReviewApp')
-  .controller('FolderCtrl', ['$scope', '$routeParams', 'drive', function($scope, $routeParams, drive) {
+  .controller('FolderCtrl', ['$scope', '$stateParams', 'drive', function($scope, $stateParams, drive) {
     
-    drive.fetchChildrenOfFolder($routeParams.folderId).then(function(items) {
-      console.log(items);
+    $scope.files = [];
+    $scope.folderId = $stateParams.folderId;
+    
+    drive.fetchChildrenOfFolder($stateParams.folderId).then(function(children) {
+      $scope.files = children;
     })
     
   }]);
