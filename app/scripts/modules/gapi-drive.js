@@ -24,8 +24,10 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   var DEFAULT_FILE_FIELDS = 'id,title,mimeType,userPermission,editable,copyable,shared,fileSize,downloadUrl';
   var DEFAULT_COMMENT_FIELDS = 'items(anchor,author,commentId,content)';
   var DEFAULT_REVISION_FIELDS = 'fileSize,id';
+  var DEFAULT_FOLDER_CHILDREN_FIELDS = 'items(fileExtension,id,kind,mimeType,title)';
 
   var cache = $cacheFactory('files');
+  var folderCache = $cacheFactory('folders');
   
   /**
    * Combines metadata & content into a single object & caches the result
@@ -205,14 +207,18 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
    * Folder Stuff
    */
   this.fetchChildrenOfFolder = function(folderId) {
-    // TODO: Support paging
+    var folderChildren = folderCache.get(folderId);
+    if (folderChildren) {
+      return $q.when(folderChildren);
+    }
     return googleApi.then(function(gapi) {
-      var fetchChildrenRequest = gapi.client.drive.children.list({
-        folderId: folderId
+      return gapi.client.drive.files.list({
+        fields: DEFAULT_FOLDER_CHILDREN_FIELDS,
+        q: '\'' + folderId + '\' in parents' 
       });
-      return $q.when(fetchChildrenRequest);
     }).then(function(response) {
       var parsed = JSON.parse(response.body);
+      folderCache.put(folderId, parsed);
       return parsed.items;
     });
   }
