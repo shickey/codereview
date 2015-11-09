@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md-2">
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="file in files" ui-sref="folder.file({folderId: folderId, fileId: file.id})">{{file.title}}</a>
+      <a class="list-group-item" ng-repeat="file in files | filter:mimeTypeFilter" ui-sref="folder.file({folderId: folderId, fileId: file.id})" ng-class="(fileId === file.id) ? 'active' : ''">{{file.title}}</a>
     </div>
   </div>
   <div class="col-md-10">
