@@ -1,7 +1,10 @@
 <div class="row">
   <div class="col-md-2">
     <div class="list-group">
-      <a class="list-group-item" ng-repeat="file in files | filter:mimeTypeFilter" ui-sref="folder.file({folderId: folderId, fileId: file.id})" ng-class="(fileId === file.id) ? 'active' : ''">{{file.title}}</a>
+      <div ng-repeat="file in files | filter:mimeTypeFilter">
+        <a ng-if="file.mimeType !== 'application/vnd.google-apps.folder'" class="list-group-item" ui-sref="folder.file({folderId: folderId, fileId: file.id})" ng-class="(fileId === file.id) ? 'active' : ''">{{file.title}}</a>
+        <button ng-if="file.mimeType === 'application/vnd.google-apps.folder'" class="list-group-item" ng-dblclick="goToFolder(file.id)">{{file.title}}</button>
+      </div>
     </div>
   </div>
   <div class="col-md-10">

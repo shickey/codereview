@@ -9,15 +9,15 @@
  */
  
 angular.module('codeReviewApp')
-  .controller('FolderCtrl', ['$scope', '$stateParams', 'drive', function($scope, $stateParams, drive) {
+  .controller('FolderCtrl', ['$scope', '$stateParams', '$state', 'drive', function($scope, $stateParams, $state, drive) {
     
     $scope.ACCEPTABLE_MIME_TYPES = ['application/vnd.google-apps.folder', 'text/x-python'];
     
     $scope.files = [];
-    $scope.folderId = $stateParams.folderId;
+    $scope.folderId = $stateParams.folderId || 'root';
     $scope.fileId = undefined;
     
-    drive.fetchChildrenOfFolder($stateParams.folderId).then(function(children) {
+    drive.fetchChildrenOfFolder($scope.folderId).then(function(children) {
       $scope.files = children;
     });
     
@@ -27,6 +27,10 @@ angular.module('codeReviewApp')
     
     $scope.mimeTypeFilter = function(folderChild) {
       return $scope.ACCEPTABLE_MIME_TYPES.indexOf(folderChild.mimeType) !== -1;
+    };
+    
+    $scope.goToFolder = function(folderId) {
+      $state.go('folder', {folderId: folderId});
     };
     
   }]);

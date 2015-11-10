@@ -26,6 +26,11 @@ angular.module('codeReviewApp')
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .authenticatedState('home', {
+        url: '/home',
+        templateUrl: 'views/folder.html',
+        controller: 'FolderCtrl'
+      })
       .authenticatedState('file', {
         url: '/:fileId',
         templateUrl: 'views/editor.html',
