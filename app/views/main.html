@@ -3,8 +3,7 @@
     <div class="jumbotron">
       <h1>Code Review!</h1>
       <div ng-show="!loading">
-        <a href="" class="btn btn-primary" ng-if="!isLoggedIn" ng-click="login()">Connect to Google Drive</a>
-        <a href="" class="btn btn-primary" ng-if="isLoggedIn" ng-click="openFile()">Open a File</a>
+        <a href="" class="btn btn-primary" ng-click="login()">Connect to Google Drive</a>
       </div>
       <div ng-show="loading">
         <button type="button", class="btn btn-primary" disabled="disabled">Loading...</button>

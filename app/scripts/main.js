@@ -8,31 +8,18 @@
  * Controller of the codeReviewApp
  */
 angular.module('codeReviewApp')
-  .controller('MainCtrl', ['$scope', '$location', 'login', 'drive', function($scope, $location, login, drive) {
-    $scope.loading    = true;
-    $scope.isLoggedIn = false;
+  .controller('MainCtrl', ['$scope', '$state', 'login', 'drive', function($scope, $state, login, drive) {
+    $scope.loading = true;
     
     login.checkAuth().then(function() {
-      $scope.isLoggedIn = true;
-    }).finally(function() {
+      $state.go('home');
+    }, function() {
       $scope.loading = false;
     });
     
     $scope.login = function() {
       login.login().then(function() {
-        $scope.isLoggedIn = true;
-      });
-    };
-    
-    $scope.openFile = function() {
-      drive.showPicker().then(function(result) {
-        if (result.type === 'file') {
-          $location.path('/' + result.id);
-        }
-        else if (result.type === 'folder') {
-          $location.path('/folder/' + result.id);
-        }
-        
+        $state.go('home');
       });
     };
     
