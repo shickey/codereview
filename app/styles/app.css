@@ -1,15 +1,22 @@
-body {
-  padding-top: 70px;
-}
-
 pre {
   color: white;
   background-color: #272822;
 }
 
+.vertical-center {
+  min-height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
 .code-editor {
   height: 400px;
   width: 100%;
+}
+
+.three-dots-row-spinner {
+  margin: 15px auto auto;
 }
 
 .ui-scrollpoint {

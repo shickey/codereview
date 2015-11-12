@@ -20,6 +20,7 @@ angular
     'ui.ace',
     'ui.scrollpoint',
     'ui.router',
+    'angular-spinkit',
     'drive',
     'login',
     'uuid',
