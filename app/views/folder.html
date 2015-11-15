@@ -1,11 +1,10 @@
 <div class="row">
-  <div class="col-md-2">
-    <div class="list-group">
-      <div ng-repeat="file in files | filter:mimeTypeFilter | orderBy: 'mimeType' | orderBy: 'title' ">
-        <a ng-if="file.mimeType !== 'application/vnd.google-apps.folder'" class="list-group-item" ui-sref="folder.file({folderId: folderId, fileId: file.id})" ng-class="(fileId === file.id) ? 'active' : ''">{{file.title}}</a>
-        <button ng-if="file.mimeType === 'application/vnd.google-apps.folder'" class="list-group-item" ng-dblclick="goToFolder(file.id)"><span class="glyphicon glyphicon-folder-open"></span> {{file.title}}</button>
-      </div>
-    </div>
+  <div class="col-md-2 drive-sidebar">
+    <ul class="drive-list">
+      <li class="drive-item truncate" ng-repeat="child in children | filter:mimeTypeFilter | orderBy: 'mimeType' | orderBy: 'title' " ng-class="(fileId === child.id) ? 'active' : ''" ng-click="goToChild(child.id, isFolder(child))">
+        <span ng-if="isFolder(child)" class="drive-item-icon glyphicon glyphicon-folder-open"></span>{{child.title}}
+      </li>
+    </ul>
   </div>
   <div class="col-md-10">
     <div ui-view></div>

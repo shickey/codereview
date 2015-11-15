@@ -47,3 +47,47 @@ pre {
 #code-editor-error-output {
   color: red;
 }
+
+/*
+ * Sidebar
+ */
+ 
+.drive-sidebar {
+  min-height: 100%;
+  min-height: 100vh;
+  background-color: #eee;
+  padding: 0;
+}
+
+.drive-list {
+  margin: 0;
+  padding: 0;
+}
+
+.drive-item {
+  margin: 0;
+  padding: 5px 15px 5px 25px;
+  color: rgb(86, 86, 86);
+}
+
+.drive-item:hover {
+  background-color: #ddd;
+  border-left: 4px solid rgb(86, 86, 86);
+  padding-left: 21px;
+}
+
+.drive-item.active {
+  color: #337ab7;
+  border-left: 4px solid #337ab7;
+  padding-left: 21px;
+}
+
+.drive-item-icon {
+  padding-right: .75em;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
