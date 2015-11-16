@@ -21,9 +21,9 @@ pre {
 
 .ui-scrollpoint {
   position: fixed;
-  top: 70px;
+  /*top: 70px;*/
   width: inherit;
-  padding-right: 30px;
+  /*padding-right: 30px;*/
 }
 
 .comment-range {
@@ -57,6 +57,11 @@ pre {
   min-height: 100vh;
   background-color: #eee;
   padding: 0;
+  box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
+}
+
+.drive-folder-title {
+  padding-left: .5em;
 }
 
 .drive-list {
@@ -74,12 +79,25 @@ pre {
   background-color: #ddd;
   border-left: 4px solid rgb(86, 86, 86);
   padding-left: 21px;
+  box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
 }
 
 .drive-item.active {
   color: #337ab7;
   border-left: 4px solid #337ab7;
   padding-left: 21px;
+}
+
+.drive-item.disabled {
+  color: rgb(200, 200, 200);
+}
+
+.drive-item.disabled:hover {
+  background-color: #eee;
+  border-left: 0;
+  padding-left: 25px;
+  color: rgb(200, 200, 200);
+  box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
 }
 
 .drive-item-icon {

@@ -1,7 +1,8 @@
 <div class="row">
   <div class="col-md-2 drive-sidebar">
+    <h3 class="drive-folder-title">{{folderMetadata.title}}</h3>
     <ul class="drive-list">
-      <li class="drive-item truncate" ng-repeat="child in children | filter:mimeTypeFilter | orderBy: 'mimeType' | orderBy: 'title' " ng-class="(fileId === child.id) ? 'active' : ''" ng-click="goToChild(child.id, isFolder(child))">
+      <li class="drive-item truncate" ng-repeat="child in children" ng-class="{'active' : fileId === child.id, 'disabled' : !isOpenable(child)}" ng-click="!isOpenable(child) || goToChild(child.id, isFolder(child))">
         <span ng-if="isFolder(child)" class="drive-item-icon glyphicon glyphicon-folder-open"></span>{{child.title}}
       </li>
     </ul>

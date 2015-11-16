@@ -206,6 +206,17 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   /*
    * Folder Stuff
    */
+   this.fetchFolderMetadata = function(folderId) {
+    return googleApi.then(function(gapi) {
+      return gapi.client.drive.files.get({
+        fileId: folderId,
+        fields: DEFAULT_FILE_FIELDS
+      });
+    }).then(function(response) {
+      return JSON.parse(response.body);
+    });
+   }
+   
   this.fetchChildrenOfFolder = function(folderId) {
     var folderChildren = folderCache.get(folderId);
     if (folderChildren) {
@@ -214,7 +225,7 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
     return googleApi.then(function(gapi) {
       return gapi.client.drive.files.list({
         fields: DEFAULT_FOLDER_CHILDREN_FIELDS,
-        q: '\'' + folderId + '\' in parents' 
+        q: '\'' + folderId + '\' in parents and trashed=false' 
       });
     }).then(function(response) {
       var items = JSON.parse(response.body).items;
