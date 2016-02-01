@@ -15,6 +15,7 @@ angular.module('codeReviewApp')
     
     $scope.comments = [];
     $scope.selectedComments = [];
+    $scope.editorMode = undefined;
     
     $scope.selectComment = function(comment) {
       $scope.selectCommentsAtOffset(comment.offset);
@@ -121,6 +122,22 @@ angular.module('codeReviewApp')
         console.log('Unable to load file');
       });
     };
+
+    $scope.$watch('file.metadata.mimeType', function(newMimeType) {
+      if (!newMimeType) { return; }
+      if (newMimeType == 'text/x-python') {
+        $scope.editorMode = 'python';
+      }
+      else if (newMimeType == 'text/html') {
+        $scope.editorMode = 'html';
+      }
+      else if (newMimeType == 'text/css') {
+        $scope.editorMode = 'css';
+      }
+      else if (newMimeType == 'application/x-javascript') {
+        $scope.editorMode = 'javascript';
+      }
+    });
     
     $scope.$watchCollection('file.comments', function(newComments) {
       if (!newComments) { return; }

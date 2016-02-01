@@ -50,6 +50,12 @@ angular.module('codeReviewApp')
         redrawCommentMarkers();
       });
     };
+
+    $scope.$watch('editorMode', function(newMode) {
+      if (newMode) {
+        $scope.editor.session.setMode('ace/mode/' + newMode);
+      }
+    });
     
     $scope.$watch('selectedComments', function(selectedComments) {
       if (!$scope.shouldUpdateCursor) {

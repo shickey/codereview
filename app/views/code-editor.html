@@ -1,6 +1,6 @@
 <div ui-scrollpoint class="row ui-scrollpoint">
   <div class="col-md-12">
-    <div class="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', mode:'python', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+    <div class="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
     <button class="btn btn-warning" ng-show="file.permissions.userCanComment" ng-click="insertCommentAtSelection()" ng-disabled="!isRangeSelected">Add Comment</button>
     <button class="btn btn-primary" ng-click="runCode()">Run</button>
   </div>
