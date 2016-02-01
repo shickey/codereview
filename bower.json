@@ -31,6 +31,9 @@
       "main": [
         "src/ace.js",
         "src/mode-python.js",
+        "src/mode-html.js",
+        "src/mode-css.js",
+        "src/mode-javascript.js",
         "src/theme-monokai.js"
       ]
     },
