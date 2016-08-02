@@ -11,7 +11,7 @@
 angular.module('codeReviewApp')
   .controller('FolderCtrl', ['$scope', '$stateParams', '$state', 'drive', function($scope, $stateParams, $state, drive) {
     
-    $scope.OPENABLE_MIME_TYPES = ['text/x-python', 'text/html', 'text/css', 'application/x-javascript'];
+    $scope.OPENABLE_MIME_TYPES = ['text/x-python', 'text/x-python-script', 'text/html', 'text/css', 'application/x-javascript'];
     
     $scope.children = [];
     $scope.folderId = $stateParams.folderId || 'root';
