@@ -43,5 +43,8 @@
         "styles/monokai_sublime.css"
       ]
     }
+  },
+  "resolutions": {
+    "skulpt": "~0.11.0"
   }
 }

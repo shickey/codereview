@@ -125,7 +125,7 @@ angular.module('codeReviewApp')
 
     $scope.$watch('file.metadata.mimeType', function(newMimeType) {
       if (!newMimeType) { return; }
-      if (newMimeType == 'text/x-python') {
+      if (newMimeType == 'text/x-python' || newMimeType == 'text/x-python-script') {
         $scope.editorMode = 'python';
       }
       else if (newMimeType == 'text/html') {
@@ -136,6 +136,9 @@ angular.module('codeReviewApp')
       }
       else if (newMimeType == 'application/x-javascript') {
         $scope.editorMode = 'javascript';
+      }
+      else {
+        console.log("unrecognized MIME type");
       }
     });
     
