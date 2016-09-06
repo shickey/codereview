@@ -28,6 +28,7 @@ module.exports = function(config) {
       'bower_components/ace-builds/src/mode-html.js',
       'bower_components/ace-builds/src/mode-css.js',
       'bower_components/ace-builds/src/mode-javascript.js',
+      'bower_components/ace-builds/src/mode-swift.js',
       'bower_components/ace-builds/src/theme-monokai.js',
       'bower_components/angular/angular.js',
       'bower_components/angular-animate/angular-animate.js',

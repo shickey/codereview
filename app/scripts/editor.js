@@ -137,6 +137,19 @@ angular.module('codeReviewApp')
       else if (newMimeType == 'application/x-javascript') {
         $scope.editorMode = 'javascript';
       }
+      else if (newMimeType == 'application/octet-stream') {
+        // Generic binary file. We take our best guess based on file extension
+        var filenameComponents = $scope.file.metadata.title.split('.');
+        if (filenameComponents.length > 1) {
+          var ext = filenameComponents[filenameComponents.length - 1];
+          if (ext === 'swift') {
+            $scope.editorMode = 'swift';
+          }
+        }
+        else {
+          console.log("unrecognized file type");
+        }
+      }
       else {
         console.log("unrecognized MIME type");
       }
