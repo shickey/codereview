@@ -242,30 +242,18 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   this.showPicker = function() {
     return googleApi.then(function(gapi) {
       var deferred = $q.defer();
-      var view = new google.picker.DocsView
+      var view = new google.picker.DocsView;
       view.setIncludeFolders(true)
-        .setOwnedByMe(true)
-        .setSelectFolderEnabled(true);
+        view.setParent('root');
       // view.setMimeTypes('text/x-python');
       var picker = new google.picker.PickerBuilder()
         .setAppId(applicationId)
         .setOAuthToken(gapi.auth.getToken().access_token)
         .addView(view)
         .setCallback(function(data) {
-          console.log(data);
           if (data.action == google.picker.Action.PICKED) {
             var item = data.docs[0];
-            var mimeType = item.mimeType;
-            var result = {
-              id: item.id
-            };
-            if (mimeType === 'application/vnd.google-apps.folder') {
-              result.type = 'folder'
-            }
-            else {
-              result.type = 'file'
-            }
-            deferred.resolve(result);
+            deferred.resolve(item.id);
             
           } else if (data.action == google.picker.Action.CANCEL) {
             deferred.reject();

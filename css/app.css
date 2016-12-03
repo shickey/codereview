@@ -1,10 +1,15 @@
 body {
   padding-top: 70px;
+  background-color: #004358;
 }
 
 pre {
   color: white;
   background-color: #272822;
+}
+
+.light-text {
+  color: #FFF;
 }
 
 .vertical-center {
@@ -21,6 +26,7 @@ pre {
 
 .three-dots-row-spinner {
   margin: 15px auto auto;
+  background-color: #FFF;
 }
 
 .ui-scrollpoint {

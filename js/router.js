@@ -21,15 +21,15 @@ angular.module('codeReviewApp')
     $urlRouterProvider.otherwise("/");
     
     $stateProvider
-      .state('main', {
+      .state('login', {
         url: '/',
-        templateUrl: 'templates/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'templates/login.html',
+        controller: 'LoginCtrl'
       })
-      .authenticatedState('home', {
-        url: '/home',
-        templateUrl: 'templates/folder.html',
-        controller: 'FolderCtrl'
+      .authenticatedState('open', {
+        url: '/open',
+        templateUrl: 'templates/open-file.html',
+        controller: 'OpenFileCtrl'
       })
       .authenticatedState('file', {
         url: '/:fileId',
