@@ -7,6 +7,8 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
     $scope.editor = null;
     $scope.shouldUpdateCursor = true;
     $scope.isRangeSelected = false;
+    $scope.selectedRange = undefined;
+    $scope.selectionScreenLocation = undefined;
     
     $scope.aceLoaded = function(_editor) {
       _editor.setReadOnly(true);
@@ -37,9 +39,9 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       var editorHeight = winH - 51; // TODO: Actually get the nav bar size here;
       $('#code-editor').height(editorHeight);
       
-      var editorWidth = $('#code-editor').width();
+      var editorOffset = $('#code-editor').width() + $('#code-editor').position().left;
       $('#comment-list').outerHeight(editorHeight);
-      $('#comment-list').css('margin-left', editorWidth);
+      $('#comment-list').css('margin-left', editorOffset);
     }
     
     $(window).resize(onResize);
@@ -58,12 +60,22 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       var selectionRange = $scope.editor.selection.getRange();
       if (selectionRange.isEmpty()) {
         $scope.isRangeSelected = false;
+        $scope.selectedRange = undefined;
+        $scope.selectionScreenLocation = undefined;
       }
       else {
         $scope.isRangeSelected = true;
+        $scope.selectedRange = selectionRange;
+        var screenRange = $scope.editor.renderer.textToScreenCoordinates(selectionRange.start.row, selectionRange.start.column);
+        $scope.selectionScreenLocation = screenRange;
       }
       $timeout(function(){
         redrawCommentMarkers();
+        if ($scope.isRangeSelected) {
+          var editorOffset = $('#code-editor').width() + $('#code-editor').position().left;
+          $('#add-comment-button').css('left', (editorOffset - 10) + "px");
+          $('#add-comment-button').css('top', ($scope.selectionScreenLocation.pageY + 10) + "px");
+        }
       });
     };
 

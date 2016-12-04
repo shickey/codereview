@@ -9,13 +9,22 @@
  */
  
 angular.module('codeReviewApp')
-  .controller('EditorCtrl', ['$scope', '$stateParams', 'drive', 'rfc4122', function($scope, $stateParams, drive, rfc4122) {
+  .controller('EditorCtrl', ['$scope', '$state', '$stateParams', 'drive', 'rfc4122', function($scope, $state, $stateParams, drive, rfc4122) {
     
     $scope.file = null;
     
     $scope.comments = [];
     $scope.selectedComments = [];
     $scope.editorMode = undefined;
+    
+    /*
+     *  Menu Items
+     */
+    $scope.openFile = function() {
+      drive.showPicker().then(function(fileId) {
+        $state.go('file', {fileId: fileId});
+      });
+    }
     
     $scope.shareFile = function() {
       drive.showSharing($stateParams.fileId);
@@ -121,6 +130,7 @@ angular.module('codeReviewApp')
     var loadFile = function() {
       var filePromise = drive.loadFile($stateParams.fileId);
       return filePromise.then(function(file) {
+        console.log(file);
         $scope.file = file;
       }, function() {
         console.log('Unable to load file');

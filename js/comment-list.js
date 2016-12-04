@@ -8,7 +8,7 @@ angular.module('codeReviewApp').controller('CommentListCtrl', ['$scope', '$timeo
         var commentId = selectedComments[0].id;
         var commentEl = angular.element(document.querySelector('#comment-' + commentId));
         var top = commentEl.position().top;
-        $("#comment-list").animate({scrollTop: top - 72}); // TODO: Fix up scrolling locations
+        $("#comment-list").animate({scrollTop: top - 92}); // TODO: Fix up scrolling locations
       });
     });
     
