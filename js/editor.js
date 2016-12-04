@@ -130,7 +130,6 @@ angular.module('codeReviewApp')
     var loadFile = function() {
       var filePromise = drive.loadFile($stateParams.fileId);
       return filePromise.then(function(file) {
-        console.log(file);
         $scope.file = file;
       }, function() {
         console.log('Unable to load file');

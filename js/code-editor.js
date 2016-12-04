@@ -43,6 +43,7 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       var editorOffset = $('#code-editor').width() + $('#code-editor').position().left;
       $('#comment-list').outerHeight(editorHeight);
       $('#comment-list').css('margin-left', editorOffset);
+      $('#comment-list').css('padding-bottom', editorHeight - 31);
       
       changeSelection();
     }
@@ -91,6 +92,9 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
     $scope.$watch('selectedComments', function(selectedComments) {
       if (!$scope.shouldUpdateCursor) {
         $scope.shouldUpdateCursor = true;
+        if (selectedComments.length > 0) {
+          $timeout(moveCommentList(selectedComments));
+        }
         return;
       }
       if (selectedComments.length === 0) { return; }
@@ -105,13 +109,29 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       $scope.editor.scrollToLine(range.start.row, true, true, null);
       redrawCommentMarkers();
       $timeout(function() {
+        moveCommentList(selectedComments);
         selection.on('changeCursor', changeCursor);
-      })
+      }, 200);
     });
     
     $scope.$watchCollection('comments', function() {
       redrawCommentMarkers();
     });
+    
+    var moveCommentList = function(selectedComments) {
+      var comment = selectedComments[0];
+      var offset = comment.offset;
+      var range = rangeFromAnchorPoint(offset, 0);
+      var screenRange = $scope.editor.renderer.textToScreenCoordinates(range.start.row, range.start.column);
+      var commentEl = $('#comment-' + comment.id);
+      var top = commentEl.position().top + $("#comment-list").scrollTop();
+      var listOffset = top - screenRange.pageY;
+      console.log(listOffset);
+      if (listOffset <= 31) {
+        listOffset = -31;
+      }
+      $("#comment-list").animate({scrollTop: listOffset});
+    }
     
     var redrawCommentMarkers = function() {
       // Just do the simple/dumb thing of clearing all the markers
