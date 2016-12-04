@@ -21,13 +21,12 @@ var module = angular.module('drive', ['gapi']);
 module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', function($q, $cacheFactory, googleApi, applicationId) {
 
   // Only fetch fields that we care about
-  var DEFAULT_FILE_FIELDS = 'id,title,mimeType,userPermission,editable,copyable,shared,fileSize,downloadUrl';
-  var DEFAULT_COMMENT_FIELDS = 'items(anchor,author,commentId,content)';
-  var DEFAULT_REVISION_FIELDS = 'fileSize,id';
-  var DEFAULT_FOLDER_CHILDREN_FIELDS = 'items(fileExtension,id,kind,mimeType,title)';
+  var DEFAULT_FILE_FIELDS = 'id,name,mimeType,capabilities,shared,size,webContentLink';
+  var DEFAULT_COMMENTS_FIELDS = 'comments(anchor,author,id,content)';
+  var DEFAULT_COMMENT_FIELDS = 'anchor,author,id,content';
+  var DEFAULT_REVISION_FIELDS = 'size,id';
 
   var cache = $cacheFactory('files');
-  var folderCache = $cacheFactory('folders');
   
   /**
    * Combines metadata & content into a single object & caches the result
@@ -37,19 +36,11 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
    * @return {Object} combined object
    */
   var combineAndStoreResults = function(metadata, content, revision, comments) {
-    var permission = metadata.userPermission;
-    var canEdit = (permission.role === "owner" || permission.role === "writer");
-    var canComment = canEdit || (permission.role === "reader" && permission.additionalRoles && permission.additionalRoles.indexOf("commenter") >= 0)
-    var permissions = {
-      userCanEdit: canEdit,
-      userCanComment: canComment
-    };
     var file = {
       metadata: metadata,
       content: content,
       revision: revision,
       comments: comments,
-      permissions: permissions
     };
     cache.put(metadata.id, file);
     return file;
@@ -82,11 +73,11 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
       });
       var commentsRequest = gapi.client.drive.comments.list({
         fileId: fileId,
-        fields: DEFAULT_COMMENT_FIELDS
+        fields: DEFAULT_COMMENTS_FIELDS
       });
       return $q.all([$q.when(metadataRequest), $q.when(contentRequest), $q.when(revisionRequest), $q.when(commentsRequest)]);
     }).then(function(responses) {
-      var comments = JSON.parse(responses[3].body).items;
+      var comments = JSON.parse(responses[3].body).comments;
       comments.forEach(function(comment) {
         if (!comment.anchor) { return; };
         comment.anchor = JSON.parse(comment.anchor);
@@ -138,13 +129,15 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   };
   
   
-  this.insertComment = function(fileId, comment) {
+  this.createComment = function(fileId, comment) {
+    console.log(comment);
     return googleApi.then(function(gapi) {
       var body = {
         content: comment.content,
         anchor:  JSON.stringify(comment.anchor)
       }
-      var insertCommentRequest = gapi.client.drive.comments.insert({
+      var insertCommentRequest = gapi.client.drive.comments.create({
+        fields: DEFAULT_COMMENT_FIELDS,
         fileId: fileId,
         resource: body
       });
@@ -164,7 +157,8 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   this.updateComment = function(fileId, commentId, newContent) {
     return googleApi.then(function(gapi) {
       var body = {content: newContent};
-      var patchCommentRequest = gapi.client.drive.comments.patch({
+      var patchCommentRequest = gapi.client.drive.comments.update({
+        fields: DEFAULT_COMMENT_FIELDS,
         fileId: fileId,
         commentId: commentId,
         resource: body
@@ -194,7 +188,7 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
       if (cachedFile && cachedFile.comments) {
         for (var i = 0; i < cachedFile.comments.length; ++i) {
           var comment = cachedFile.comments[i];
-          if (comment.commentId === commentId) {
+          if (comment.id === commentId) {
             cachedFile.comments.splice(i, 1);
             break;
           }
@@ -206,46 +200,48 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
   /*
    * Folder Stuff
    */
-   this.fetchFolderMetadata = function(folderId) {
-    return googleApi.then(function(gapi) {
-      return gapi.client.drive.files.get({
-        fileId: folderId,
-        fields: DEFAULT_FILE_FIELDS
-      });
-    }).then(function(response) {
-      return JSON.parse(response.body);
-    });
-   }
+  //  this.fetchFolderMetadata = function(folderId) {
+  //   return googleApi.then(function(gapi) {
+  //     return gapi.client.drive.files.get({
+  //       fileId: folderId,
+  //       fields: DEFAULT_FILE_FIELDS
+  //     });
+  //   }).then(function(response) {
+  //     return JSON.parse(response.body);
+  //   });
+  //  }
    
-  this.fetchChildrenOfFolder = function(folderId) {
-    var folderChildren = folderCache.get(folderId);
-    if (folderChildren) {
-      return $q.when(folderChildren);
-    }
-    return googleApi.then(function(gapi) {
-      return gapi.client.drive.files.list({
-        fields: DEFAULT_FOLDER_CHILDREN_FIELDS,
-        q: '\'' + folderId + '\' in parents and trashed=false' 
-      });
-    }).then(function(response) {
-      var items = JSON.parse(response.body).items;
-      folderCache.put(folderId, items);
-      return items;
-    });
-  }
+  // this.fetchChildrenOfFolder = function(folderId) {
+  //   var folderChildren = folderCache.get(folderId);
+  //   if (folderChildren) {
+  //     return $q.when(folderChildren);
+  //   }
+  //   return googleApi.then(function(gapi) {
+  //     return gapi.client.drive.files.list({
+  //       fields: DEFAULT_FOLDER_CHILDREN_FIELDS,
+  //       q: '\'' + folderId + '\' in parents and trashed=false' 
+  //     });
+  //   }).then(function(response) {
+  //     var items = JSON.parse(response.body).items;
+  //     folderCache.put(folderId, items);
+  //     return items;
+  //   });
+  // }
 
   /**
    * Displays the Drive file picker configured for selecting text files
    *
    * @return {Promise} Promise that resolves with the ID of the selected file
    */
-  this.showPicker = function() {
+  this.showPicker = function(mimeTypes) {
     return googleApi.then(function(gapi) {
       var deferred = $q.defer();
       var view = new google.picker.DocsView;
       view.setIncludeFolders(true)
-        view.setParent('root');
-      // view.setMimeTypes('text/x-python');
+        .setParent('root');
+      if (mimeTypes) {
+        view.setMimeTypes(mimeTypes.join());
+      }
       var picker = new google.picker.PickerBuilder()
         .setAppId(applicationId)
         .setOAuthToken(gapi.auth.getToken().access_token)
@@ -272,11 +268,12 @@ module.service('drive', ['$q', '$cacheFactory', 'googleApi', 'applicationId', fu
    */
   this.showSharing = function(id) {
     return googleApi.then(function(gapi) {
-      //var deferred = $q.defer();
+      var deferred = $q.defer();
       var share = new gapi.drive.share.ShareClient(applicationId);
+      share.setOAuthToken(gapi.auth.getToken().access_token);
       share.setItemIds([id]);
       share.showSettingsDialog();
-      //return deferred.promise;
+      return deferred.promise;
     });
   };
 

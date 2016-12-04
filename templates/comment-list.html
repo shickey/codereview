@@ -2,8 +2,8 @@
   <div ng-repeat="comment in comments">
     <div ng-if="!comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
       <div class="panel-heading clearfix">
-        <h3 class="panel-title pull-left">{{comment.authorName}}</h3>
-        <div class="btn-group btn-group-xs pull-right" role="group" ng-show="comment.isAuthenticatedUser">
+        <h3 class="panel-title pull-left">{{comment.author.name}}</h3>
+        <div class="btn-group btn-group-xs pull-right" role="group" ng-show="comment.author.isMe">
           <button class="btn btn-xs btn-default" ng-click="beginEditing(comment)"><span class="glyphicon glyphicon-pencil"></span></button>
           <button class="btn btn-xs btn-default" ng-click="deleteComment(comment)"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
@@ -12,7 +12,7 @@
     </div>
     <div ng-if="comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
       <div class="panel-heading">
-        <h3 class="panel-title">{{comment.saved ? comment.authorName : "New comment!"}}</h3>
+        <h3 class="panel-title">{{comment.saved ? comment.author.name : "New comment!"}}</h3>
       </div>
       <div class="panel-body">
         <textarea class="form-control" rows="3" placeholder="Add comment..." ng-model="comment.content"></textarea>

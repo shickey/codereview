@@ -17,6 +17,10 @@ angular.module('codeReviewApp')
     $scope.selectedComments = [];
     $scope.editorMode = undefined;
     
+    $scope.shareFile = function() {
+      drive.showSharing($stateParams.fileId);
+    }
+    
     $scope.selectComment = function(comment) {
       $scope.selectCommentsAtOffset(comment.offset);
     };
@@ -69,7 +73,7 @@ angular.module('codeReviewApp')
           txt: {
             o: editingComment.offset,
             l: editingComment.len,
-            ml: +($scope.file.revision.fileSize)
+            ml: +($scope.file.revision.size)
           }
         }]
       };
@@ -79,7 +83,7 @@ angular.module('codeReviewApp')
         anchor: anchor
       };
       
-      drive.insertComment($stateParams.fileId, comment).then(function() {
+      drive.createComment($stateParams.fileId, comment).then(function() {
         removeUnsavedComment(editingComment);
       });
     };
@@ -117,6 +121,7 @@ angular.module('codeReviewApp')
     var loadFile = function() {
       var filePromise = drive.loadFile($stateParams.fileId);
       return filePromise.then(function(file) {
+        console.log(file);
         $scope.file = file;
       }, function() {
         console.log('Unable to load file');
@@ -139,7 +144,7 @@ angular.module('codeReviewApp')
       }
       else if (newMimeType == 'application/octet-stream') {
         // Generic binary file. We take our best guess based on file extension
-        var filenameComponents = $scope.file.metadata.title.split('.');
+        var filenameComponents = $scope.file.metadata.name.split('.');
         if (filenameComponents.length > 1) {
           var ext = filenameComponents[filenameComponents.length - 1];
           if (ext === 'swift') {
@@ -163,12 +168,14 @@ angular.module('codeReviewApp')
         var anchorPoint = comment.anchor.a[0].txt;
 
         var commentModel = {
-          id: comment.commentId,
+          id: comment.id,
           offset: anchorPoint.o,
           len: anchorPoint.l,
           content: comment.content,
-          authorName: comment.author.displayName,
-          isAuthenticatedUser: comment.author.isAuthenticatedUser,
+          author: {
+            name: comment.author.displayName,
+            isMe: comment.author.me
+          },
           selected: false,
           saved: true,
           editing: false
