@@ -43,6 +43,8 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       var editorOffset = $('#code-editor').width() + $('#code-editor').position().left;
       $('#comment-list').outerHeight(editorHeight);
       $('#comment-list').css('margin-left', editorOffset);
+      
+      changeSelection();
     }
     
     $(window).resize(onResize);
