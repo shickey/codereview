@@ -20,7 +20,7 @@
       <li>
         <div class="btn-group" role="group" aria-label="...">
           <a class="btn btn-default navbar-btn" href="{{ file.metadata.webContentLink }}"><span class="glyphicon glyphicon-save"></span> Download</a>
-          <button type="button" class="btn btn-default navbar-btn" ng-click="shareFile()"><span class="glyphicon glyphicon-plus"></span> Share</button>
+          <button type="button" class="btn btn-default navbar-btn" ng-click="shareFile()"><span class="glyphicon glyphicon-user"></span> Share</button>
         </div>
       </li>
     </ul>
@@ -34,7 +34,7 @@
 
 <div id="comment-list" ng-controller="CommentListCtrl">
   <div ng-repeat="comment in comments">
-    <div ng-if="!comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning selected-comment' : 'panel-default'" ng-click="selectComment(comment)">
+    <div ng-if="!comment.editing" class="panel comment" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning selected-comment' : 'panel-default'" ng-click="selectComment(comment)">
       <div class="panel-heading clearfix">
         <h3 class="panel-title pull-left">{{comment.author.name}}</h3>
         <div class="btn-group btn-group-xs pull-right" role="group" ng-show="comment.author.isMe">
@@ -44,7 +44,7 @@
       </div>
       <div class="panel-body" marked="comment.content"></div>
     </div>
-    <div ng-if="comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning selected-comment' : 'panel-default'" ng-click="selectComment(comment)">
+    <div ng-if="comment.editing" class="panel comment" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning selected-comment' : 'panel-default'" ng-click="selectComment(comment)">
       <div class="panel-heading">
         <h3 class="panel-title">{{comment.saved ? comment.author.name : "New comment!"}}</h3>
       </div>

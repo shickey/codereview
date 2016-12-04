@@ -17,6 +17,7 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       _editor.renderer.setAnimatedScroll(true);
       _editor.selection.on('changeCursor', changeCursor);
       _editor.selection.on('changeSelection', changeSelection);
+      _editor.session.on('changeScrollTop', changeSelection);
       _editor.on('change', redrawCommentMarkers);
       _editor.setAutoScrollEditorIntoView();
       

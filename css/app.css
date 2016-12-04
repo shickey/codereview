@@ -61,20 +61,16 @@ pre {
   color: red;
 }
 
-.selected-comment {
+.comment {
   position: relative;
+  left: 0;
+  transition: left .3s;
+  -webkit-transition: left .3s;
+}
+.selected-comment {
   left: -21px;
-  animation: select-comment .3s;
 }
 
-@keyframes select-comment {
-  0% {
-    left: 0;
-  }
-  100% {
-    left: -21px;
-  }
-}
 
 #add-comment-button {
   position: absolute;
