@@ -1,9 +1,74 @@
-<!doctype html> <html class="no-js"> <head> <meta charset="utf-8"> <title>Code Review</title> <meta name="description" content=""> <meta name="viewport" content="width=device-width"> <link rel="stylesheet" href="styles/vendor.2c995b7d.css"> <link rel="stylesheet" href="styles/main.52f76266.css">  <body ng-app="codeReviewApp"> <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]--> <div class="container-fluid"> <div ui-view></div> </div> <!-- Google Analytics: change UA-XXXXX-X to be your site's ID --> <script>!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Code Review</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="lib/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="lib/highlight/styles/monokai-sublime.css" />
+    <link rel="stylesheet" href="lib/angular-spinkit/angular-spinkit.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono|Noto+Sans:400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body ng-app="codeReviewApp">
+
+    <!-- <div class="container-fluid"> -->
+      <div ui-view></div>
+    <!-- </div> -->
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+     <!-- <script>
+       !function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
        (A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
        r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
        }(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
        ga('create', 'UA-69549233-1');
-       ga('send', 'pageview');</script> <script src="scripts/vendor.c7a970a0.js"></script> <script src="scripts/scripts.30942ad6.js"></script> <script src="https://apis.google.com/js/drive-share:picker:client:platform.js?onload=on_gapi_loaded"></script>  
+       ga('send', 'pageview');
+    </script> -->
+    
+    <script src="lib/jquery/jquery-3.1.1.min.js"></script>
+    <script src="lib/ace/ace.js"></script>
+    <script src="lib/ace/mode-python.js"></script>
+    <script src="lib/ace/mode-html.js"></script>
+    <script src="lib/ace/mode-css.js"></script>
+    <script src="lib/ace/mode-javascript.js"></script>
+    <script src="lib/ace/mode-swift.js"></script>
+    <script src="lib/ace/theme-monokai.js"></script>
+    <script src="lib/marked/marked.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular/angular-marked.js"></script>
+    <script src="lib/angular/angular-route.min.js"></script>
+    <script src="lib/angular/angular-ui-ace.min.js"></script>
+    <script src="lib/angular/angular-ui-scrollpoint.min.js"></script>
+    <script src="lib/angular/angular-uuid-service.js"></script>
+    <script src="lib/bootstrap/bootstrap.min.js"></script>
+    <script src="lib/skulpt/skulpt.min.js"></script>
+    <script src="lib/skulpt/skulpt-stdlib.js"></script>
+    <script src="lib/highlight/highlight.pack.js"></script>
+    <script src="lib/angular/angular-ui-router.min.js"></script>
+    <script src="lib/angular-spinkit/angular-spinkit.min.js"></script>
+
+    <script src="js/modules/gapi.js"></script>
+    <script src="js/modules/gapi-drive.js"></script>
+    <script src="js/modules/gapi-login.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/config/gapi-config.js"></script>
+    <script src="js/config/marked-config.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/code-editor.js"></script>
+    <script src="js/comment-list.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/open-file.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/folder.js"></script>
+    
+    <script src="https://apis.google.com/js/drive-share:picker:client:platform.js?onload=on_gapi_loaded"></script>
+</body>
+</html>
