@@ -7,11 +7,40 @@
     <button type="button" class="btn btn-default navbar-btn navbar-right" ng-click="shareFile()">Share <span class="glyphicon glyphicon-plus"></span></button>
   </div>
 </nav>
-<div class="row">
+<!-- <div class="row">
   <div class="col-md-8">
     <code-editor></code-editor>
   </div>
   <div class="col-md-4">
     <comment-list></comment-list>
   </div>
+</div> -->
+
+<div id="code-editor-container" ng-controller="CodeEditorCtrl">
+  <div id="code-editor" ng-model="file.content" ui-ace="{theme:'monokai', showPrintMargin:false, onLoad: aceLoaded}">Loading...</div>
+</div>
+
+<div id="comment-list" ng-controller="CommentListCtrl">
+  <div ng-repeat="comment in comments">
+    <div ng-if="!comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
+      <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left">{{comment.author.name}}</h3>
+        <div class="btn-group btn-group-xs pull-right" role="group" ng-show="comment.author.isMe">
+          <button class="btn btn-xs btn-default" ng-click="beginEditing(comment)"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button class="btn btn-xs btn-default" ng-click="deleteComment(comment)"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+      </div>
+      <div class="panel-body" marked="comment.content"></div>
+    </div>
+    <div ng-if="comment.editing" class="panel" id="comment-{{comment.id}}" ng-class="comment.selected ? 'panel-warning' : 'panel-default'" ng-click="selectComment(comment)">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{comment.saved ? comment.author.name : "New comment!"}}</h3>
+      </div>
+      <div class="panel-body">
+        <textarea class="form-control" rows="3" placeholder="Add comment..." ng-model="comment.content"></textarea>
+        <button class="btn btn-success" ng-click="saveComment(comment)">Save</button>
+        <button class="btn btn-danger" ng-click="cancelEditing(comment)">Cancel</button>
+      </div>
+    </div>
+  </div>  
 </div>

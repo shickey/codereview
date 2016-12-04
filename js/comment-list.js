@@ -1,14 +1,6 @@
 'use strict';
 
-angular.module('codeReviewApp')
-  .directive('commentList', function() {
-    return {
-      templateUrl: 'templates/comment-list.html',
-      controller: 'CommentListCtrl',
-      controllerAs: 'ctrl'
-    };
-  })
-  .controller('CommentListCtrl', ['$scope', '$timeout', function($scope, $timeout) {
+angular.module('codeReviewApp').controller('CommentListCtrl', ['$scope', '$timeout', function($scope, $timeout) {
     
     $scope.$watch('selectedComments', function(selectedComments) {
       if (selectedComments.length === 0) { return; }
@@ -16,7 +8,7 @@ angular.module('codeReviewApp')
         var commentId = selectedComments[0].id;
         var commentEl = angular.element(document.querySelector('#comment-' + commentId));
         var top = commentEl.position().top;
-        $("body").animate({scrollTop: top - 40});
+        $("#comment-list").animate({scrollTop: top - 72}); // TODO: Fix up scrolling locations
       });
     });
     

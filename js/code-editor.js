@@ -1,15 +1,6 @@
 'use strict';
 
-angular.module('codeReviewApp')
-  .directive('codeEditor', function() {
-    return {
-      templateUrl: 'templates/code-editor.html',
-      replace: true,
-      controller: 'CodeEditorCtrl',
-      controllerAs: 'ctrl'
-    };
-  })
-  .controller('CodeEditorCtrl', ['$scope', '$timeout', function($scope, $timeout) {
+angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeout', function($scope, $timeout) {
     
     var Range = ace.require('ace/range').Range;
     
@@ -25,8 +16,33 @@ angular.module('codeReviewApp')
       _editor.selection.on('changeCursor', changeCursor);
       _editor.selection.on('changeSelection', changeSelection);
       _editor.on('change', redrawCommentMarkers);
+      _editor.setAutoScrollEditorIntoView();
+      
+      _editor.setOption('scrollPastEnd', true);
+      
+      // Hide the ugly, ugly scrollbars
+      _editor.renderer.scrollBarV.width = 0;
+      _editor.renderer.scrollBarV.element.style.display = "none";
+      
+      _editor.renderer.scrollBarH.height = 0;
+      _editor.renderer.scrollBarH.element.style.display = "none";
+      
       $scope.editor = _editor;
+      onResize();
     };
+    
+    var onResize = function() {
+      var winH = document.documentElement.clientHeight;
+      var winW = document.documentElement.clientWidth;
+      var editorHeight = winH - 51; // TODO: Actually get the nav bar size here;
+      $('#code-editor').height(editorHeight);
+      
+      var editorWidth = $('#code-editor').width();
+      $('#comment-list').outerHeight(editorHeight);
+      $('#comment-list').css('margin-left', editorWidth);
+    }
+    
+    $(window).resize(onResize);
     
     var changeCursor = function() {
       var cursor = $scope.editor.selection.getCursor();

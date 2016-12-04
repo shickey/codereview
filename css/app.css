@@ -1,5 +1,5 @@
 body {
-  padding-top: 70px;
+  padding-top: 51px;
   background-color: #004358;
   font-family: 'Noto Sans', sans-serif;
 }
@@ -20,9 +20,17 @@ pre {
   align-items: center;
 }
 
-.code-editor {
-  height: 400px;
-  width: 100%;
+#code-editor {
+  position: absolute;
+  top: 51px;
+  left: 0;
+  height: 700px;
+  width: 60%;
+  box-shadow: 0 0 5px 3px black;
+}
+
+.ace_scrollbar {
+  display: none !important;
 }
 
 .three-dots-row-spinner {
@@ -47,7 +55,8 @@ pre {
 }
 
 #comment-list {
-  position: relative;
+  padding: 41px 81px 0 41px;
+  overflow-y: auto;
 }
 
 #code-output-panel {
