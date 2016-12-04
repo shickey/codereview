@@ -79,65 +79,6 @@ pre {
   z-index: 100;
 }
 
-/*
- * Sidebar
- */
- 
-// .drive-sidebar {
-//   margin-top: -20px;
-//   min-height: 100%;
-//   min-height: 100vh;
-//   background-color: #eee;
-//   padding: 0;
-//   box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
-// }
-
-// .drive-folder-title {
-//   padding-left: .5em;
-// }
-
-// .drive-list {
-//   margin: 0;
-//   padding: 0;
-// }
-
-// .drive-item {
-//   margin: 0;
-//   padding: 5px 15px 5px 25px;
-//   color: rgb(86, 86, 86);
-// }
-
-// .drive-item:hover {
-//   background-color: #ddd;
-//   border-left: 4px solid rgb(86, 86, 86);
-//   padding-left: 21px;
-//   box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
-// }
-
-// .drive-item.active {
-//   color: #337ab7;
-//   border-left: 4px solid #337ab7;
-//   padding-left: 21px;
-// }
-
-// .drive-item.disabled {
-//   color: rgb(200, 200, 200);
-// }
-
-// .drive-item.disabled:hover {
-//   background-color: #eee;
-//   border-left: 0;
-//   padding-left: 25px;
-//   color: rgb(200, 200, 200);
-//   box-shadow: inset -5px 0px 5px -3px rgba(163, 163, 163, 0.87);
-// }
-
-// .drive-item-icon {
-//   padding-right: .75em;
-// }
-
-// .truncate {
-//   white-space: nowrap;
-//   overflow: hidden;
-//   text-overflow: ellipsis;
-// }
+.comment-input {
+  margin-bottom: 15px;
+}

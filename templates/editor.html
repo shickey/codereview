@@ -50,7 +50,7 @@
           <h3 class="panel-title">{{comment.saved ? comment.author.name : "New comment!"}}</h3>
         </div>
         <div class="panel-body">
-          <textarea class="form-control" rows="3" placeholder="Add comment..." ng-model="comment.content"></textarea>
+          <textarea class="form-control comment-input" rows="3" placeholder="Add comment..." ng-model="comment.content"></textarea>
           <button class="btn btn-success" ng-click="saveComment(comment)">Save</button>
           <button class="btn btn-danger" ng-click="cancelEditing(comment)">Cancel</button>
         </div>
