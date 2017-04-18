@@ -147,7 +147,7 @@ angular.module('codeReviewApp')
       else if (newMimeType == 'text/css') {
         $scope.editorMode = 'css';
       }
-      else if (newMimeType == 'application/x-javascript') {
+      else if (newMimeType == 'application/x-javascript' || newMimeType == 'text/javascript') {
         $scope.editorMode = 'javascript';
       }
       else if (newMimeType == 'application/octet-stream') {
@@ -164,7 +164,7 @@ angular.module('codeReviewApp')
         }
       }
       else {
-        console.log("unrecognized MIME type");
+        console.log("unrecognized MIME type: " + newMimeType);
       }
     });
     

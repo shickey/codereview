@@ -30,6 +30,9 @@ angular.module('codeReviewApp').controller('CodeEditorCtrl', ['$scope', '$timeou
       _editor.renderer.scrollBarH.height = 0;
       _editor.renderer.scrollBarH.element.style.display = "none";
       
+      // Turn off auto syntax checking (e.g. for javascript)
+      _editor.session.setOption("useWorker", false);
+      
       $scope.editor = _editor;
       onResize();
     };
